@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Portföy</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>
+  <style>
+    :root {
+      --primary: #ff6b00;
+      --primary-dark: #dd5d00;
+      --text-light: #f8f9fa;
+      --text-dark: #111111;
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --secondary-light: #f0f0f0;
+      --secondary-dark: #1e1e1e;
+    }
+    
+    .dark {
+      --text: var(--text-light);
+      --bg: var(--bg-dark);
+      --secondary: var(--secondary-dark);
+    }
+    
+    .light {
+      --text: var(--text-dark);
+      --bg: var(--bg-light);
+      --secondary: var(--secondary-light);
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    
+    .section {
+      padding: 5rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.25rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background-color: var(--secondary);
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      border-radius: 4px;
+      background-color: var(--primary);
+      width: 0;
+      transition: width 1s ease-in-out;
+    }
+    
+    .card {
+      background-color: var(--secondary);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--primary);
+    }
+    
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 0;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background-color: var(--primary);
+    }
+    
+    #three-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .theme-toggle, .lang-select {
+      cursor: pointer;
+    }
+    
+    .nav-links a {
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--secondary);
+      background-color: var(--bg);
+      color: var(--text);
+      transition: border-color 0.3s;
+    }
+    
+    .contact-form input:focus, .contact-form textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    
+    .icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background-color: var(--secondary);
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+    
+    .icon-container i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .lang-flag {
+      width: 24px;
+      height: 16px;
+      object-fit: cover;
+      margin-right: 8px;
+      border-radius: 2px;
+    }
+    
+    .hide {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .desktop-menu {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: var(--bg);
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        transform: translateY(-100%);
+        transition: transform 0.3s;
+      }
+      
+      .mobile-menu.active {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="dark">
+  <!-- Header -->
+  <header class="fixed w-full top-0 z-50" style="background-color: var(--bg); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold" style="color: var(--primary);">PORTFOLIO</a>
+        
+        <div class="flex items-center space-x-6">
+          <!-- Language Selector -->
+          <div class="relative group">
+            <div class="lang-select flex items-center">
+              <img id="current-flag" src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/tr.svg" alt="Türkçe" class="lang-flag">
+              <span id="current-lang" class="mr-2" data-lang="tr">Türkçe</span>
+              <i class="fas fa-chevron-down text-sm"></i>
+            </div>
+            <div class="lang-dropdown absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md p-2 hidden group-hover:block" style="min-width: 150px; background-color: var(--secondary);">
+              <div class="lang-option py-1 px-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center" data-lang="tr">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/tr.svg" alt="Türkçe" class="lang-flag">
+                <span>Türkçe</span>
+              </div>
+              <div class="lang-option py-1 px-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center" data-lang="en">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/gb.svg" alt="English" class="lang-flag">
+                <span>English</span>
+              </div>
+              <div class="lang-option py-1 px-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center" data-lang="de">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/de.svg" alt="Deutsch" class="lang-flag">
+                <span>Deutsch</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Theme Toggle -->
+          <div class="theme-toggle">
+            <i class="fas fa-sun text-xl" id="light-icon" style="display: inline-block;"></i>
+            <i class="fas fa-moon text-xl" id="dark-icon" style="display: none;"></i>
+          </div>
+          
+          <!-- Mobile Menu Toggle -->
+          <div class="mobile-menu-btn block md:hidden">
+            <i class="fas fa-bars text-xl"></i>
+          </div>
+          
+          <!-- Desktop Navigation -->
+          <nav class="desktop-menu hidden md:block">
+            <ul class="flex space-x-6 nav-links">
+              <li><a href="#home" class="nav-link" data-key="nav.home">Ana Sayfa</a></li>
+              <li><a href="#about" class="nav-link" data-key="nav.about">Hakkımda</a></li>
+              <li><a href="#skills" class="nav-link" data-key="nav.skills">Yetenekler</a></li>
+              <li><a href="#projects" class="nav-link" data-key="nav.projects">Projeler</a></li>
+              <li><a href="#experience" class="nav-link" data-key="nav.experience">Deneyim</a></li>
+              <li><a href="#contact" class="nav-link" data-key="nav.contact">İletişim</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-menu hidden">
+      <ul class="space-y-3 nav-links">
+        <li><a href="#home" class="block py-2" data-key="nav.home">Ana Sayfa</a></li>
+        <li><a href="#about" class="block py-2" data-key="nav.about">Hakkımda</a></li>
+        <li><a href="#skills" class="block py-2" data-key="nav.skills">Yetenekler</a></li>
+        <li><a href="#projects" class="block py-2" data-key="nav.projects">Projeler</a></li>
+        <li><a href="#experience" class="block py-2" data-key="nav.experience">Deneyim</a></li>
+        <li><a href="#contact" class="block py-2" data-key="nav.contact">İletişim</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section with Three.js -->
+  <section id="home" class="section min-h-screen flex items-center" style="padding-top: 7rem;">
+    <div id="three-container"></div>
+    <div class="container mx-auto px-4">
+      <div class="hero-content text-center md:text-left max-w-3xl">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          <span data-key="hero.greeting">Merhaba, ben</span>
+          <br>
+          <span class="typing-text" style="color: var(--primary);"></span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8" data-key="hero.subtitle">Etkileyici dijital deneyimler yaratmaya odaklanmış tam yığın geliştirici.</p>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+          <a href="#projects" class="btn btn-primary" data-key="hero.cta1">Projelerimi Gör</a>
+          <a href="#contact" class="btn btn-outline" data-key="hero.cta2">İletişime Geç</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ <!-- About Section -->
+<section id="about" class="section" style="background-color: var(--secondary);">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="about.title">Hakkımda</h2>
+      <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+    </div>
+    
+    <div class="flex flex-col md:flex-row items-center">
+      <div class="md:w-1/2 mb-8 md:mb-0">
+        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300" style="max-width: 400px; margin: 0 auto;">
+          <!-- Placeholder for profile image with background image -->
+          <div class="bg-cover bg-center h-96" style="background-image: url('hakkimdafoto.jpg'); display: flex; align-items: center; justify-content: center;">
+          </div>
+        </div>
+      </div>
+      
+      <div class="md:w-1/2 md:pl-8">
+        <h3 class="text-2xl font-bold mb-4" data-key="about.subtitle">Dijital Deneyimler Yaratıyorum</h3>
+        <p class="mb-6" data-key="about.description1">Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.</p>
+        <p class="mb-6" data-key="about.description2">Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.</p>
+        
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div>
+            <p><strong data-key="about.name.label">Ad</strong>: <span data-key="about.name.value">Fatih Mete Sert</span></p>
+          </div>
+          <div>
+            <p><strong data-key="about.email.label">E-posta</strong>: <span data-key="about.email.value">fthmetesert@gmail.com</span></p>
+          </div>
+          <div>
+            <p><strong data-key="about.phone.label">Telefon</strong>: <span data-key="about.phone.value">+90 552 818 7407</span></p>
+          </div>
+          <div>
+            <p><strong data-key="about.location.label">Lokasyon</strong>: <span data-key="about.location.value">İzmir, Türkiye</span></p>
+          </div>
+        </div>
+        
+        <a href="#" class="btn btn-primary" data-key="about.resume">Özgeçmişi İndir</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Skills Section -->
+  <section id="skills" class="section">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="skills.title">Yeteneklerim</h2>
+        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+        <p class="mt-4 max-w-2xl mx-auto" data-key="skills.subtitle">Yıllar içinde geliştirdiğim teknik ve yaratıcı yeteneklerim.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Technical Skills -->
+        <div class="skill-category">
+          <h3 class="text-xl font-bold mb-6" data-key="skills.technical.title">Teknik Yetenekler</h3>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>HTML/CSS</span>
+              <span>90%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="90"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>JavaScript</span>
+              <span>85%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="85"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>React</span>
+              <span>80%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="80"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>Three.js</span>
+              <span>75%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="75"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>Node.js</span>
+              <span>70%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="70"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Creative Skills -->
+        <div class="skill-category">
+          <h3 class="text-xl font-bold mb-6" data-key="skills.creative.title">Yaratıcı Yetenekler</h3>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>UI/UX Design</span>
+              <span>85%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="85"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>Animation</span>
+              <span>80%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="80"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>Figma</span>
+              <span>90%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="90"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>Photoshop</span>
+              <span>75%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="75"></div>
+            </div>
+          </div>
+          
+          <div class="skill-item mb-6">
+            <div class="flex justify-between mb-1">
+              <span>Illustrator</span>
+              <span>65%</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" data-progress="65"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tools and Technologies -->
+      <div class="mt-16">
+        <h3 class="text-xl font-bold mb-6 text-center" data-key="skills.tools.title">Araçlar ve Teknolojiler</h3>
+        <div class="flex flex-wrap justify-center gap-4">
+          <div class="tech-item p-4 rounded" style="background-color: var(--secondary);">
+            <i class="fab fa-react text-3xl mb-2" style="color: var(--primary);"></i>
+            <p>React</p>
+          </div>
+          <div class="tech-item p-4 rounded" style="background-color: var(--secondary);">
+            <i class="fab fa-node-js text-3xl mb-2" style="color: var(--primary);"></i>
+            <p>Node.js</p>
+          </div>
+          <div class="tech-item p-4 rounded" style="background-color: var(--secondary);">
+            <i class="fab fa-js text-3xl mb-2" style="color: var(--primary);"></i>
+            <p>JavaScript</p>
+          </div>
+          <div class="tech-item p-4 rounded" style="background-color: var(--secondary);">
+            <i class="fab fa-html5 text-3xl mb-2" style="color: var(--primary);"></i>
+            <p>HTML5</p>
+          </div>
+          <div class="tech-item p-4 rounded" style="background-color: var(--secondary);">
+            <i class="fab fa-css3-alt text-3xl mb-2" style="color: var(--primary);"></i>
+            <p>CSS3</p>
+          </div>
+          <div class="tech-item p-4 rounded" style="background-color: var(--secondary);">
+            <i class="fab fa-github text-3xl mb-2" style="color: var(--primary);"></i>
+            <p>Git/GitHub</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+<section id="projects" class="section" style="background-color: var(--secondary);">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="projects.title">Projelerim</h2>
+      <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+      <p class="mt-4 max-w-2xl mx-auto" data-key="projects.subtitle">Geliştirdiğim bazı önemli projeler.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Project 1 -->
+      <div class="card project-card overflow-hidden">
+        <!-- Project Image with background-image -->
+        <div class="project-image" style="background-image: url('proje1.jpg'); height: 200px; background-size: cover; background-position: center;"></div>
+        
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2" data-key="projects.project1.title">3D İnteraktif Portföy</h3>
+          <p class="mb-4" data-key="projects.project1.description">Three.js ve GSAP kullanılarak oluşturulmuş, tam ekran 3D deneyim sunan interaktif bir portföy sitesi.</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">React</span>
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Three.js</span>
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">GSAP</span>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
+              <i class="fas fa-eye mr-1"></i> <span data-key="projects.live">Canlı Demo</span>
+            </a>
+            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
+              <i class="fab fa-github mr-1"></i> <span data-key="projects.code">Kaynak Kodu</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Project 2 -->
+      <div class="card project-card overflow-hidden">
+        <!-- Project Image with background-image -->
+        <div class="project-image" style="background-image: url('proje2.jpg'); height: 200px; background-size: cover; background-position: center;"></div>
+        
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2" data-key="projects.project2.title">E-ticaret Platformu</h3>
+          <p class="mb-4" data-key="projects.project2.description">Next.js, Tailwind CSS ve MongoDB ile oluşturulmuş, tam özellikli modern bir e-ticaret platformu.</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Next.js</span>
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Tailwind</span>
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">MongoDB</span>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
+              <i class="fas fa-eye mr-1"></i> <span data-key="projects.live">Canlı Demo</span>
+            </a>
+            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
+              <i class="fab fa-github mr-1"></i> <span data-key="projects.code">Kaynak Kodu</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Project 3 -->
+      <div class="card project-card overflow-hidden">
+        <!-- Project Image with background-image -->
+        <div class="project-image" style="background-image: url('proje3.jpg'); height: 200px; background-size: cover; background-position: center;"></div>
+        
+        <div class="p-4">
+          <h3 class="text-xl font-bold mb-2" data-key="projects.project3.title">İçerik Yönetim Sistemi</h3>
+          <p class="mb-4" data-key="projects.project3.description">Vue.js ve Firebase kullanılarak geliştirilmiş, kullanıcı dostu bir içerik yönetim sistemi.</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Vue.js</span>
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Firebase</span>
+            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">SCSS</span>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
+              <i class="fas fa-eye mr-1"></i> <span data-key="projects.live">Canlı Demo</span>
+            </a>
+            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
+              <i class="fab fa-github mr-1"></i> <span data-key="projects.code">Kaynak Kodu</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="#" class="btn btn-primary" data-key="projects.viewAll">Tüm Projeleri Gör</a>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Experience Section -->
+  <section id="experience" class="section">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="experience.title">Deneyim</h2>
+        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+        <p class="mt-4 max-w-2xl mx-auto" data-key="experience.subtitle">Şu anda profesyonel iş deneyimim bulunmamaktadır, ancak kişisel projelerim ve eğitimlerimle kendimi sürekli geliştiriyorum.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section id="education" class="section" style="background-color: var(--secondary);">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="education.title">Eğitim</h2>
+        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+      </div>
+      
+      <div class="max-w-3xl mx-auto">
+        <!-- Education Item 1 -->
+        <div class="timeline-item">
+          <div class="mb-2" style="color: var(--primary);">2022 - Devam Ediyor</div>
+          <h3 class="text-xl font-bold mb-1" data-key="education.degree1.title">Lise Eğitimi</h3>
+          <div class="text-sm mb-2" style="color: var(--primary);" data-key="education.degree1.school">Göztepe Mesleki ve Teknik Anadolu Lisesi</div>
+          <p data-key="education.degree1.description">Algoritmik düşünme becerilerimi geliştiriyor; frontend ve backend alanlarında aktif olarak kendimi eğitiyorum.</p>
+        </div>
+        
+        <!-- Education Item 2 -->
+        <div class="timeline-item">
+          <div class="mb-2" style="color: var(--primary);">2017 - 2021</div>
+          <h3 class="text-xl font-bold mb-1" data-key="education.degree2.title">Ortaokul</h3>
+          <div class="text-sm mb-2" style="color: var(--primary);" data-key="education.degree2.school">19 Mayıs Ortaokulu</div>
+          <p data-key="education.degree2.description">Bilgisayarın temel donanım parçalarını öğrenme ve algoritma mantığını kavrama.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Contact Section -->
+  <section id="contact" class="section" style="background-color: var(--secondary);">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="contact.title">İletişime Geç</h2>
+        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+        <p class="mt-4 max-w-2xl mx-auto" data-key="contact.subtitle">Benimle iletişime geçmek veya bir proje hakkında konuşmak için aşağıdaki bilgileri kullanabilirsiniz.</p>
+      </div>
+      
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Contact Info -->
+        <div class="md:w-1/2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Email -->
+            <div class="card flex flex-col items-center text-center">
+              <div class="icon-container">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <h3 class="text-lg font-semibold mb-2" data-key="contact.email.title">E-posta</h3>
+              <p data-key="contact.email.value">fthmetesrt@gmail.com</p>
+            </div>
+            
+            <!-- Phone -->
+            <div class="card flex flex-col items-center text-center">
+              <div class="icon-container">
+                <i class="fas fa-phone"></i>
+              </div>
+              <h3 class="text-lg font-semibold mb-2" data-key="contact.phone.title">Telefon</h3>
+              <p data-key="contact.phone.value">+90 552 818 7407</p>
+            </div>
+            
+            <!-- Location -->
+            <div class="card flex flex-col items-center text-center">
+              <div class="icon-container">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <h3 class="text-lg font-semibold mb-2" data-key="contact.location.title">Lokasyon</h3>
+              <p data-key="contact.location.value">İzmir, Türkiye</p>
+            </div>
+            
+            <!-- Social -->
+            <div class="card flex flex-col items-center text-center">
+              <div class="icon-container">
+                <i class="fas fa-share-alt"></i>
+              </div>
+              <h3 class="text-lg font-semibold mb-2" data-key="contact.social.title">Sosyal Medya</h3>
+              <div class="flex space-x-4">
+                <a href="#" style="color: var(--primary);"><i class="fab fa-linkedin text-xl"></i></a>
+                <a href="#" style="color: var(--primary);"><i class="fab fa-github text-xl"></i></a>
+                <a href="#" style="color: var(--primary);"><i class="fab fa-twitter text-xl"></i></a>
+                <a href="#" style="color: var(--primary);"><i class="fab fa-instagram text-xl"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <div class="md:w-1/2">
+          <div class="card">
+            <h3 class="text-xl font-bold mb-4" data-key="contact.form.title">Mesaj Gönder</h3>
+            <form class="contact-form">
+              <div class="mb-4">
+                <label for="name" class="block mb-2" data-key="contact.form.name">Adınız</label>
+                <input type="text" id="name" required>
+              </div>
+              
+              <div class="mb-4">
+                <label for="email" class="block mb-2" data-key="contact.form.email">E-posta Adresiniz</label>
+                <input type="email" id="email" required>
+              </div>
+              
+              <div class="mb-4">
+                <label for="subject" class="block mb-2" data-key="contact.form.subject">Konu</label>
+                <input type="text" id="subject" required>
+              </div>
+              
+              <div class="mb-4">
+                <label for="message" class="block mb-2" data-key="contact.form.message">Mesajınız</label>
+                <textarea id="message" rows="5" required></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary w-full" data-key="contact.form.send">Gönder</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background-color: var(--bg); border-top: 1px solid var(--secondary);">
+    <div class="container mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <p data-key="footer.copyright">© 2025 Tüm Hakları Saklıdır.</p>
+        </div>
+        <div class="flex space-x-4">
+          <a href="#" style="color: var(--primary);"><i class="fab fa-linkedin"></i></a>
+          <a href="#" style="color: var(--primary);"><i class="fab fa-github"></i></a>
+          <a href="#" style="color: var(--primary);"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="color: var(--primary);"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.1/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.1/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
+  
+  <script>
+    // Language Translations
+    const translations = {
+      tr: {
+        "nav.home": "Ana Sayfa",
+        "nav.about": "Hakkımda",
+        "nav.skills": "Yetenekler",
+        "nav.projects": "Projeler",
+        "nav.experience": "Deneyim",
+        "nav.contact": "İletişim",
+        
+        "hero.greeting": "Merhaba, ben",
+        "hero.typing": ["Web Geliştirici", "UI/UX Tasarımcı", "3D Etkileşim Uzmanı"],
+        "hero.subtitle": "Etkileyici dijital deneyimler yaratmaya odaklanmış tam yığın geliştirici.",
+        "hero.cta1": "Projelerimi Gör",
+        "hero.cta2": "İletişime Geç",
+        
+        "about.title": "Hakkımda",
+        "about.subtitle": "Dijital Deneyimler Yaratıyorum",
+        "about.description1": "Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.",
+        "about.description2": "Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.",
+        "about.name.label": "Ad",
+        "about.name.value": "Fatih Mete Sert",
+        "about.email.label": "E-posta",
+        "about.email.value": "fthmetesert@gmail.com",
+        "about.phone.label": "Telefon",
+        "about.phone.value": "+90 552 818 7407",
+        "about.location.label": "Lokasyon",
+        "about.location.value": "İzmir, Türkiye",
+        "about.resume": "Özgeçmişi İndir",
+        
+        "skills.title": "Yeteneklerim",
+        "skills.subtitle": "Yıllar içinde geliştirdiğim teknik ve yaratıcı yeteneklerim.",
+        "skills.technical.title": "Teknik Yetenekler",
+        "skills.creative.title": "Yaratıcı Yetenekler",
+        "skills.tools.title": "Araçlar ve Teknolojiler",
+        
+        "projects.title": "Projelerim",
+        "projects.subtitle": "Geliştirdiğim bazı önemli projeler.",
+        "projects.project1.title": "3D İnteraktif Portföy",
+        "projects.project1.description": "Three.js ve GSAP kullanılarak oluşturulmuş, tam ekran 3D deneyim sunan interaktif bir portföy sitesi.",
+        "projects.project2.title": "E-ticaret Platformu",
+        "projects.project2.description": "Next.js, Tailwind CSS ve MongoDB ile oluşturulmuş, tam özellikli modern bir e-ticaret platformu.",
+        "projects.project3.title": "İçerik Yönetim Sistemi",
+        "projects.project3.description": "Vue.js ve Firebase kullanılarak geliştirilmiş, kullanıcı dostu bir içerik yönetim sistemi.",
+        "projects.live": "Canlı Demo",
+        "projects.code": "Kaynak Kodu",
+        "projects.viewAll": "Tüm Projeleri Gör",
+        
+       "experience.title": "Deneyim",
+       "experience.subtitle": "Şu anda profesyonel iş deneyimim bulunmamaktadır, ancak kişisel projelerim ve eğitimlerimle kendimi sürekli geliştiriyorum.",
+        // "experience.job1.title": "Kıdemli Front-end Geliştirici",
+        // "experience.job1.company": "Teknoloji Firması A.Ş.",
+        // "experience.job1.description": "Şirketin ana ürününün kullanıcı arayüzünü geliştirdim ve bakımını yaptım. Three.js ve GSAP ile 3D etkileşimli gösterge panelleri tasarladım.",
+        // "experience.job2.title": "Full Stack Geliştirici",
+        // "experience.job2.company": "Yazılım Çözümleri Ltd.",
+        // "experience.job2.description": "Farklı sektörlerden müşteriler için web uygulamaları geliştirdim. Son teknoloji çözümler uyguladım ve API entegrasyonları gerçekleştirdim.",
+        // "experience.job3.title": "Web Geliştirici",
+        // "experience.job3.company": "Dijital Ajans",
+        // "experience.job3.description": "Çeşitli kurumsal web siteleri ve e-ticaret uygulamaları oluşturdum. Tasarım ekibiyle yakın çalışarak mükemmel kullanıcı deneyimleri sağladım.",
+        
+        "education.title": "Eğitim",
+        "education.degree1.title": "Lise-Devam Ediyor",
+        "education.degree1.school": "Göztepe Mesleki ve Teknik Anadolu Lisesi",
+        "education.degree1.description": "Algoritmik düşünme becerilerimi geliştiriyor; frontend ve backend alanlarında aktif olarak kendimi eğitiyorum.",
+        "education.degree2.title": "Ortaokul",
+        "education.degree2.school": "19 Mayıs Ortaokulu",
+        "education.degree2.description": "Bilgisayarın temel donanım parçalarını öğrenme ve algoritma mantığını kavrama.",
+        
+        "contact.title": "İletişime Geç",
+        "contact.subtitle": "Benimle iletişime geçmek veya bir proje hakkında konuşmak için aşağıdaki bilgileri kullanabilirsiniz.",
+        "contact.email.title": "E-posta",
+        "contact.email.value": "fthmetesert@gmail.com",
+        "contact.phone.title": "Telefon",
+        "contact.phone.value": "+90 552 818 7407",
+        "contact.location.title": "Lokasyon",
+        "contact.location.value": "İzmir, Türkiye",
+        "contact.social.title": "Sosyal Medya",
+        "contact.form.title": "Mesaj Gönder",
+        "contact.form.name": "Adınız",
+        "contact.form.email": "E-posta Adresiniz",
+        "contact.form.subject": "Konu",
+        "contact.form.message": "Mesajınız",
+        "contact.form.send": "Gönder",
+        
+        "footer.copyright": "© 2025 Tüm Hakları Saklıdır."
+      },
+      en: {
+        "nav.home": "Home",
+        "nav.about": "About",
+        "nav.skills": "Skills",
+        "nav.projects": "Projects",
+        "nav.experience": "Experience",
+        "nav.contact": "Contact",
+        
+        "hero.greeting": "Hello, I'm",
+        "hero.typing": ["Web Developer", "UI/UX Designer", "3D Interaction Specialist"],
+        "hero.subtitle": "A full stack developer focused on creating impressive digital experiences.",
+        "hero.cta1": "View My Work",
+        "hero.cta2": "Contact Me",
+        
+        "about.title": "About Me",
+        "about.subtitle": "Creating Digital Experiences",
+        "about.description1": "I have 1 years of professional experience where I discovered my passion for web development and design. I focus on creating aesthetic and functional web applications using modern technologies and creative solutions.",
+        "about.description2": "My expertise in using modern libraries like Three.js and GSAP allows me to create impressive and memorable user experiences. In every project, I aim to strike a perfect balance between technical excellence and creative design.",
+        "about.name.label": "Name",
+        "about.name.value": "Fatih Mete Sert",
+        "about.email.label": "Email",
+        "about.email.value": "fthmetesrt@gmail.com",
+        "about.phone.label": "Phone",
+        "about.phone.value": "+90 552 818 7407",
+        "about.location.label": "Location",
+        "about.location.value": "Izmır, Turkey",
+        "about.resume": "Download Resume",
+        
+        "skills.title": "My Skills",
+        "skills.subtitle": "Technical and creative skills I've developed over the years.",
+        "skills.technical.title": "Technical Skills",
+        "skills.creative.title": "Creative Skills",
+        "skills.tools.title": "Tools & Technologies",
+        
+        "projects.title": "My Projects",
+        "projects.subtitle": "Some significant projects I've developed.",
+        "projects.project1.title": "3D Interactive Portfolio",
+        "projects.project1.description": "An interactive portfolio site built with Three.js and GSAP, providing a full-screen 3D experience.",
+        "projects.project2.title": "E-commerce Platform",
+        "projects.project2.description": "A modern, fully-featured e-commerce platform built with Next.js, Tailwind CSS, and MongoDB.",
+        "projects.project3.title": "Content Management System",
+        "projects.project3.description": "A user-friendly content management system developed using Vue.js and Firebase.",
+        "projects.live": "Live Demo",
+        "projects.code": "Source Code",
+        "projects.viewAll": "View All Projects",
+        
+         "experience.title": "Experience",
+        "experience.subtitle": "I do not currently have professional work experience, but I continuously improve myself through personal projects and ongoing education.",
+        // "experience.job1.title": "Senior Frontend Developer",
+        // "experience.job1.company": "Technology Company Inc.",
+        // "experience.job1.description": "Developed and maintained the user interface of the company's main product. Designed 3D interactive dashboards with Three.js and GSAP.",
+        // "experience.job2.title": "Full Stack Developer",
+        // "experience.job2.company": "Software Solutions Ltd.",
+        // "experience.job2.description": "Developed web applications for clients from different sectors. Implemented cutting-edge solutions and performed API integrations.",
+        // "experience.job3.title": "Web Developer",
+        // "experience.job3.company": "Digital Agency",
+        // "experience.job3.description": "Created various corporate websites and e-commerce applications. Worked closely with the design team to provide excellent user experiences.",
+        
+        "education.title": "Education",
+        "education.degree1.title": "High School - Ongoing",
+        "education.degree1.school": "Göztepe Vocational and Technical Anatolian High School",
+        "education.degree1.description": "I am developing my algorithmic thinking skills and actively educating myself in both frontend and backend       development.",
+        "education.degree2.title": "Middle School",
+        "education.degree2.school": "19 Mayıs Middle School",
+        "education.degree2.description": "Learning the basic hardware components of computers and understanding the fundamentals of algorithms.",
+        
+        "contact.title": "Get In Touch",
+        "contact.subtitle": "You can use the information below to contact me or discuss a project.",
+        "contact.email.title": "Email",
+        "contact.email.value": "fthmetesrt@gmail.com",
+        "contact.phone.title": "Phone",
+        "contact.phone.value": "+90 552 818 7407",
+        "contact.location.title": "Location",
+        "contact.location.value": "Izmır, Turkey",
+        "contact.social.title": "Social Media",
+        "contact.form.title": "Send Message",
+        "contact.form.name": "Your Name",
+        "contact.form.email": "Your Email",
+        "contact.form.subject": "Subject",
+        "contact.form.message": "Your Message",
+        "contact.form.send": "Send",
+        
+        "footer.copyright": "© 2025 All Rights Reserved."
+      },
+      de: {
+        "nav.home": "Startseite",
+        "nav.about": "Über Mich",
+        "nav.skills": "Fähigkeiten",
+        "nav.projects": "Projekte",
+        "nav.experience": "Erfahrung",
+        "nav.contact": "Kontakt",
+        
+        "hero.greeting": "Hallo, ich bin",
+        "hero.typing": ["Webentwickler", "UI/UX Designer", "3D-Interaktionsspezialist"],
+        "hero.subtitle": "Ein Full-Stack-Entwickler, der sich auf die Erstellung beeindruckender digitaler Erlebnisse konzentriert.",
+        "hero.cta1": "Meine Arbeit Ansehen",
+        "hero.cta2": "Kontaktiere Mich",
+        
+        "about.title": "Über Mich",
+        "about.subtitle": "Digitale Erlebnisse Schaffen",
+        "about.description1": "Ich verfüge über 1 Jahre Berufserfahrung, in denen ich meine Leidenschaft für Webentwicklung und Design entdeckt habe. Ich konzentriere mich auf die Erstellung ästhetischer und funktionaler Webanwendungen mit modernen Technologien und kreativen Lösungen.",
+        "about.description2": "Meine Expertise in der Verwendung moderner Bibliotheken wie Three.js und GSAP ermöglicht es mir, beeindruckende und unvergessliche Benutzererlebnisse zu schaffen. Bei jedem Projekt strebe ich eine perfekte Balance zwischen technischer Exzellenz und kreativem Design an.",
+        "about.name.label": "Name",
+        "about.name.value": "Fatih Mete Sert",
+        "about.email.label": "E-Mail",
+        "about.email.value": "fthmetesrt@gmail.com",
+        "about.phone.label": "Telefon",
+        "about.phone.value": "+90 552 818 7407",
+        "about.location.label": "Standort",
+        "about.location.value": "Izmır, Türkei",
+        "about.resume": "Lebenslauf Herunterladen",
+        
+        "skills.title": "Meine Fähigkeiten",
+        "skills.subtitle": "Technische und kreative Fähigkeiten, die ich im Laufe der Jahre entwickelt habe.",
+        "skills.technical.title": "Technische Fähigkeiten",
+        "skills.creative.title": "Kreative Fähigkeiten",
+        "skills.tools.title": "Werkzeuge & Technologien",
+        
+        "projects.title": "Meine Projekte",
+        "projects.subtitle": "Einige bedeutende Projekte, die ich entwickelt habe.",
+        "projects.project1.title": "3D Interaktives Portfolio",
+        "projects.project1.description": "Eine interaktive Portfolio-Website, die mit Three.js und GSAP erstellt wurde und ein vollständiges 3D-Erlebnis bietet.",
+        "projects.project2.title": "E-Commerce-Plattform",
+        "projects.project2.description": "Eine moderne, vollständig ausgestattete E-Commerce-Plattform, die mit Next.js, Tailwind CSS und MongoDB erstellt wurde.",
+        "projects.project3.title": "Content-Management-System",
+        "projects.project3.description": "Ein benutzerfreundliches Content-Management-System, das mit Vue.js und Firebase entwickelt wurde.",
+        "projects.live": "Live-Demo",
+        "projects.code": "Quellcode",
+        "projects.viewAll": "Alle Projekte Ansehen",
+        
+         "experience.title": "Erfahrung",
+        "experience.subtitle": "Ich habe derzeit noch keine berufliche Erfahrung, entwickle mich jedoch stetig durch persönliche Projekte und kontinuierliche Weiterbildung weiter.",
+        // "experience.job1.title": "Senior Frontend-Entwickler",
+        // "experience.job1.company": "Technologieunternehmen GmbH",
+        // "experience.job1.description": "Entwicklung und Wartung der Benutzeroberfläche des Hauptprodukts des Unternehmens. Gestaltung von 3D-interaktiven Dashboards mit Three.js und GSAP.",
+        // "experience.job2.title": "Full-Stack-Entwickler",
+        // "experience.job2.company": "Software-Lösungen GmbH",
+        // "experience.job2.description": "Entwicklung von Webanwendungen für Kunden aus verschiedenen Branchen. Implementierung modernster Lösungen und Durchführung von API-Integrationen.",
+        // "experience.job3.title": "Webentwickler",
+        // "experience.job3.company": "Digitalagentur",
+        // "experience.job3.description": "Erstellung verschiedener Unternehmenswebsites und E-Commerce-Anwendungen. Enge Zusammenarbeit mit dem Designteam, um hervorragende Benutzererlebnisse zu bieten.",
+        
+        "education.title": "Ausbildung",
+        "education.degree1.title": "Oberschule – Laufend",
+        "education.degree1.school": "Göztepe Berufliches und Technisches Anatolisches Gymnasium",
+        "education.degree1.description": "Ich entwickle meine algorithmischen Denkfähigkeiten weiter und bilde mich aktiv im Frontend- und      Backend-Bereich weiter.",
+        "education.degree2.title": "Mittelschule",
+        "education.degree2.school": "19 Mayıs Mittelschule",
+        "education.degree2.description": "Grundlegende Hardwarekomponenten des Computers erlernen und das Verständnis für die Algorithmuslogik      entwickeln.",
+        
+        "contact.title": "Kontakt Aufnehmen",
+        "contact.subtitle": "Sie können die folgenden Informationen verwenden, um mich zu kontaktieren oder ein Projekt zu besprechen.",
+        "contact.email.title": "E-Mail",
+        "contact.email.value": "fthmetesrt@gmail.com",
+        "contact.phone.title": "Telefon",
+        "contact.phone.value": "+90 552 818 7407",
+        "contact.location.title": "Standort",
+        "contact.location.value": "Izmır, Türkei",
+        "contact.social.title": "Soziale Medien",
+        "contact.form.title": "Nachricht Senden",
+        "contact.form.name": "Ihr Name",
+        "contact.form.email": "Ihre E-Mail",
+        "contact.form.subject": "Betreff",
+        "contact.form.message": "Ihre Nachricht",
+        "contact.form.send": "Senden",
+        
+        "footer.copyright": "© 2025 Alle Rechte Vorbehalten."
+      }
+    };
+    
+   // Constants
+const LANGUAGES = {
+  tr: {
+    name: "Türkçe",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/tr.svg"
+  },
+  en: {
+    name: "English",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/gb.svg"
+  },
+  de: {
+    name: "Deutsch",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/de.svg"
+  }
+};
+
+// DOM Elements
+const DOM = {
+  currentLang: document.getElementById("current-lang"),
+  currentFlag: document.getElementById("current-flag"),
+  lightIcon: document.getElementById("light-icon"),
+  darkIcon: document.getElementById("dark-icon"),
+  typingElement: document.querySelector(".typing-text"),
+  threeContainer: document.getElementById("three-container"),
+  langSelect: document.querySelector(".lang-select"),
+  langDropdown: document.querySelector(".lang-dropdown"),
+  themeToggle: document.querySelector(".theme-toggle"),
+  mobileMenuBtn: document.querySelector(".mobile-menu-btn"),
+  mobileMenu: document.querySelector(".mobile-menu"),
+  contactForm: document.querySelector(".contact-form")
+};
+
+// App Initialization
+class PortfolioApp {
+  constructor() {
+    this.typedInstance = null;
+    this.threeJS = {
+      scene: null,
+      camera: null,
+      renderer: null,
+      particles: null
+    };
+    this.init();
+  }
+
+  init() {
+    this.setupEventListeners();
+    this.loadPreferences();
+    this.initAnimations();
+    this.initGSAPAnimations();
+  }
+
+  loadPreferences() {
+    const language = localStorage.getItem("language") || "tr";
+    this.setLanguage(language);
+
+    const theme = localStorage.getItem("theme") || 
+                 (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    this.setTheme(theme);
+  }
+
+  setLanguage(lang) {
+    if (!translations[lang]) return;
+
+    DOM.currentLang.textContent = LANGUAGES[lang].name;
+    DOM.currentLang.dataset.lang = lang;
+    DOM.currentFlag.src = LANGUAGES[lang].flag;
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll("[data-key]").forEach(element => {
+      const key = element.dataset.key;
+      if (translations[lang][key]) {
+        element.textContent = translations[lang][key];
+      }
+    });
+
+    this.initTypingAnimation();
+
+    localStorage.setItem("language", lang);
+  }
+
+  setTheme(theme) {
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
+      DOM.lightIcon.style.display = "inline-block";
+      DOM.darkIcon.style.display = "none";
+    } else {
+      document.body.classList.add("light");
+      document.body.classList.remove("dark");
+      DOM.lightIcon.style.display = "none";
+      DOM.darkIcon.style.display = "inline-block";
+    }
+
+    localStorage.setItem("theme", theme);
+  }
+
+  initThreeJS() {
+    this.threeJS.scene = new THREE.Scene();
+
+    const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
+    this.threeJS.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    this.threeJS.camera.position.z = 5;
+
+    this.threeJS.renderer = new THREE.WebGLRenderer({ 
+      alpha: true, 
+      antialias: true 
+    });
+    this.threeJS.renderer.setSize(width, height);
+    this.threeJS.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    DOM.threeContainer.appendChild(this.threeJS.renderer.domElement);
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 500;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 10;
+    }
+
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.05,
+      color: 0xff6b00
+    });
+
+    this.threeJS.particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    this.threeJS.scene.add(this.threeJS.particles);
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      this.threeJS.particles.rotation.x += 0.0005;
+      this.threeJS.particles.rotation.y += 0.0005;
+      this.threeJS.renderer.render(this.threeJS.scene, this.threeJS.camera);
+    };
+
+    animate();
+
+    window.addEventListener('resize', this.handleResize.bind(this));
+  }
+
+  handleResize() {
+    const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
+    this.threeJS.camera.aspect = width / height;
+    this.threeJS.camera.updateProjectionMatrix();
+    this.threeJS.renderer.setSize(width, height);
+  }
+
+  initTypingAnimation() {
+    const lang = DOM.currentLang.dataset.lang;
+
+    if (this.typedInstance) {
+      this.typedInstance.destroy();
+    }
+
+    this.typedInstance = new Typed(DOM.typingElement, {
+      strings: translations[lang]["hero.typing"],
+      typeSpeed: 50,
+      backSpeed: 30,
+      backDelay: 2000,
+      startDelay: 1000,
+      loop: true
+    });
+  }
+
+  initGSAPAnimations() {
+    if (typeof ScrollTrigger !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    } else {
+      console.error("ScrollTrigger plugin not found.");
+      return;
+    }
+
+    this.animateHeroSection();
+    this.animateAboutSection();
+    this.animateSkillsSection();
+    this.animateProjectsSection();
+    this.animateExperienceSection();
+    this.animateContactSection();
+  }
+
+  animateHeroSection() {
+    gsap.from(".hero-content h1", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      delay: 0.2
+    });
+
+    gsap.from(".hero-content p", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      delay: 0.4
+    });
+
+    gsap.from(".hero-content .btn", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      delay: 0.6,
+      stagger: 0.2
+    });
+  }
+
+  animateAboutSection() {
+    gsap.from("#about img, #about .rounded-lg", {
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top 80%"
+      },
+      opacity: 0,
+      x: -100,
+      duration: 1
+    });
+
+    gsap.from("#about .md\\:w-1\\/2.md\\:pl-8", {
+      scrollTrigger: {
+        trigger: "#about",
+        start: "top 80%"
+      },
+      opacity: 0,
+      x: 100,
+      duration: 1
+    });
+  }
+
+  animateSkillsSection() {
+    document.querySelectorAll(".progress-bar").forEach(bar => {
+      const progress = bar.dataset.progress;
+      gsap.to(bar, {
+        width: `${progress}%`,
+        scrollTrigger: {
+          trigger: bar,
+          start: "top 90%",
+        },
+        duration: 1.5,
+        ease: "power2.out"
+      });
+    });
+  }
+
+  animateProjectsSection() {
+    gsap.from(".project-card", {
+      scrollTrigger: {
+        trigger: "#projects",
+        start: "top 80%"
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      stagger: 0.2
+    });
+  }
+
+  animateExperienceSection() {
+    gsap.from(".timeline-item", {
+      scrollTrigger: {
+        trigger: "#experience",
+        start: "top 80%"
+      },
+      opacity: 0,
+      x: -50,
+      duration: 0.8,
+      stagger: 0.2
+    });
+  }
+
+  animateContactSection() {
+    gsap.from("#contact .card", {
+      scrollTrigger: {
+        trigger: "#contact",
+        start: "top 80%"
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      stagger: 0.1
+    });
+  }
+
+  setupEventListeners() {
+    this.setupLanguageSelector();
+
+    DOM.themeToggle.addEventListener("click", () => {
+      const isDark = document.body.classList.contains("dark");
+      this.setTheme(isDark ? "light" : "dark");
+    });
+
+    DOM.mobileMenuBtn.addEventListener("click", this.toggleMobileMenu.bind(this));
+
+    DOM.contactForm.addEventListener("submit", this.handleFormSubmit.bind(this));
+
+    this.setupSmoothScrolling();
+
+    this.initLenis();
+  }
+
+  setupLanguageSelector() {
+    DOM.langSelect.addEventListener("click", (e) => {
+      e.stopPropagation();
+      DOM.langDropdown.classList.toggle("hidden");
+    });
+
+    document.querySelectorAll(".lang-option").forEach(option => {
+      option.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setLanguage(option.dataset.lang);
+        DOM.langDropdown.classList.add("hidden");
+      });
+    });
+
+    document.addEventListener("click", () => {
+      DOM.langDropdown.classList.add("hidden");
+    });
+  }
+
+  toggleMobileMenu() {
+    if (DOM.mobileMenu.classList.contains("hidden")) {
+      DOM.mobileMenu.classList.remove("hidden");
+      setTimeout(() => DOM.mobileMenu.classList.add("active"), 10);
+    } else {
+      DOM.mobileMenu.classList.remove("active");
+      setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
+    }
+  }
+
+  handleFormSubmit(e) {
+    e.preventDefault();
+
+    const formData = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      subject: document.getElementById("subject").value,
+      message: document.getElementById("message").value
+    };
+
+    console.log("Form submitted:", formData);
+    DOM.contactForm.reset();
+
+    this.showNotification("Message sent successfully!");
+  }
+
+  showNotification(message) {
+    alert(message);
+  }
+
+  setupSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = anchor.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 70,
+            behavior: 'smooth'
+          });
+
+          this.closeMobileMenu();
+        }
+      });
+    });
+  }
+
+  closeMobileMenu() {
+    if (DOM.mobileMenu && !DOM.mobileMenu.classList.contains("hidden")) {
+      DOM.mobileMenu.classList.remove("active");
+      setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
+    }
+  }
+
+  initLenis() {
+    const lenis = new Lenis({
+      autoRaf: true,
+      lerp: 0.05,
+      duration: 1.5,
+      smooth: true
+    });
+
+    lenis.on("scroll", ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(value) {
+        return arguments.length ? lenis.scrollTo(value) : lenis.scroll.instance.scroll.y;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+      },
+      pinType: document.body.style.transform ? "transform" : "fixed"
+    });
+
+    ScrollTrigger.defaults({ scroller: document.body });
+
+    ScrollTrigger.refresh();
+
+    this.lenis = lenis;
+  }
+}
+
+// Initialize the app when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new PortfolioApp();
+});
+
+  </script>
+</body>
+</html>
