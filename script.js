@@ -272,396 +272,399 @@ de: {
 
 // DOM Elements
 const DOM = {
-currentLang: document.getElementById("current-lang"),
-currentFlag: document.getElementById("current-flag"),
-lightIcon: document.getElementById("light-icon"),
-darkIcon: document.getElementById("dark-icon"),
-typingElement: document.querySelector(".typing-text"),
-threeContainer: document.getElementById("three-container"),
-langSelect: document.querySelector(".lang-select"),
-langDropdown: document.querySelector(".lang-dropdown"),
-themeToggle: document.querySelector(".theme-toggle"),
-mobileMenuBtn: document.querySelector(".mobile-menu-btn"),
-mobileMenu: document.querySelector(".mobile-menu"),
-contactForm: document.querySelector(".contact-form")
-};
-
-// App Initialization
-class PortfolioApp {
-constructor() {
-  this.typedInstance = null;
-  this.threeJS = {
-    scene: null,
-    camera: null,
-    renderer: null,
-    particles: null
+    currentLang: document.getElementById("current-lang"),
+    currentFlag: document.getElementById("current-flag"),
+    lightIcon: document.getElementById("light-icon"),
+    darkIcon: document.getElementById("dark-icon"),
+    typingElement: document.querySelector(".typing-text"),
+    threeContainer: document.getElementById("three-container"),
+    langSelect: document.querySelector(".lang-select"),
+    langDropdown: document.querySelector(".lang-dropdown"),
+    themeToggle: document.querySelector(".theme-toggle"),
+    mobileMenuBtn: document.querySelector(".mobile-menu-btn"),
+    mobileMenu: document.querySelector(".mobile-menu"),
+    contactForm: document.querySelector(".contact-form")
   };
-  this.init();
-}
-
-init() {
-  this.setupEventListeners();
-  this.loadPreferences();
-  //this.initAnimations();
-  this.initGSAPAnimations();
-}
-
-loadPreferences() {
-  const language = localStorage.getItem("language") || "tr";
-  this.setLanguage(language);
-
-  const theme = localStorage.getItem("theme") || 
-               (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  this.setTheme(theme);
-}
-
-setLanguage(lang) {
-  if (!translations[lang]) return;
-
-  DOM.currentLang.textContent = LANGUAGES[lang].name;
-  DOM.currentLang.dataset.lang = lang;
-  DOM.currentFlag.src = LANGUAGES[lang].flag;
-  document.documentElement.lang = lang;
-
-  document.querySelectorAll("[data-key]").forEach(element => {
-    const key = element.dataset.key;
-    if (translations[lang][key]) {
-      element.textContent = translations[lang][key];
+  
+  // App Initialization
+  class PortfolioApp {
+    constructor() {
+      this.typedInstance = null;
+      this.threeJS = {
+        scene: null,
+        camera: null,
+        renderer: null,
+        particles: null
+      };
+      this.init();
     }
-  });
-
-  this.initTypingAnimation();
-
-  localStorage.setItem("language", lang);
-}
-
-setTheme(theme) {
-  if (theme === "dark") {
-    document.body.classList.add("dark");
-    document.body.classList.remove("light");
-    DOM.lightIcon.style.display = "inline-block";
-    DOM.darkIcon.style.display = "none";
-  } else {
-    document.body.classList.add("light");
-    document.body.classList.remove("dark");
-    DOM.lightIcon.style.display = "none";
-    DOM.darkIcon.style.display = "inline-block";
-  }
-
-  localStorage.setItem("theme", theme);
-}
-
-initThreeJS() {
-  this.threeJS.scene = new THREE.Scene();
-
-  const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
-  this.threeJS.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-  this.threeJS.camera.position.z = 5;
-
-  this.threeJS.renderer = new THREE.WebGLRenderer({ 
-    alpha: true, 
-    antialias: true 
-  });
-  this.threeJS.renderer.setSize(width, height);
-  this.threeJS.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  DOM.threeContainer.appendChild(this.threeJS.renderer.domElement);
-
-  const particlesGeometry = new THREE.BufferGeometry();
-  const particlesCount = 500;
-  const posArray = new Float32Array(particlesCount * 3);
-
-  for (let i = 0; i < particlesCount * 3; i++) {
-    posArray[i] = (Math.random() - 0.5) * 10;
-  }
-
-  particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-  const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.05,
-    color: 0xff6b00
-  });
-
-  this.threeJS.particles = new THREE.Points(particlesGeometry, particlesMaterial);
-  this.threeJS.scene.add(this.threeJS.particles);
-
-  const animate = () => {
-    requestAnimationFrame(animate);
-    this.threeJS.particles.rotation.x += 0.0005;
-    this.threeJS.particles.rotation.y += 0.0005;
-    this.threeJS.renderer.render(this.threeJS.scene, this.threeJS.camera);
-  };
-
-  animate();
-
-  window.addEventListener('resize', this.handleResize.bind(this));
-}
-
-handleResize() {
-  const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
-  this.threeJS.camera.aspect = width / height;
-  this.threeJS.camera.updateProjectionMatrix();
-  this.threeJS.renderer.setSize(width, height);
-}
-
-initTypingAnimation() {
-  const lang = DOM.currentLang.dataset.lang;
-
-  if (this.typedInstance) {
-    this.typedInstance.destroy();
-  }
-
-  this.typedInstance = new Typed(DOM.typingElement, {
-    strings: translations[lang]["hero.typing"],
-    typeSpeed: 50,
-    backSpeed: 30,
-    backDelay: 2000,
-    startDelay: 1000,
-    loop: true
-  });
-}
-
-initGSAPAnimations() {
-  if (typeof ScrollTrigger !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-  } else {
-    console.error("ScrollTrigger plugin not found.");
-    return;
-  }
-
-  this.animateHeroSection();
-  this.animateAboutSection();
-  this.animateSkillsSection();
-  this.animateProjectsSection();
-  this.animateExperienceSection();
-  this.animateContactSection();
-}
-
-animateHeroSection() {
-  gsap.from(".hero-content h1", {
-    opacity: 0,
-    y: 50,
-    duration: 1,
-    delay: 0.2
-  });
-
-  gsap.from(".hero-content p", {
-    opacity: 0,
-    y: 50,
-    duration: 1,
-    delay: 0.4
-  });
-
-  gsap.from(".hero-content .btn", {
-    opacity: 0,
-    y: 50,
-    duration: 1,
-    delay: 0.6,
-    stagger: 0.2
-  });
-}
-
-animateAboutSection() {
-  gsap.from("#about img, #about .rounded-lg", {
-    scrollTrigger: {
-      trigger: "#about",
-      start: "top 80%"
-    },
-    opacity: 0,
-    x: -100,
-    duration: 1
-  });
-
-  gsap.from("#about .md\\:w-1\\/2.md\\:pl-8", {
-    scrollTrigger: {
-      trigger: "#about",
-      start: "top 80%"
-    },
-    opacity: 0,
-    x: 100,
-    duration: 1
-  });
-}
-
-animateSkillsSection() {
-  document.querySelectorAll(".progress-bar").forEach(bar => {
-    const progress = bar.dataset.progress;
-    gsap.to(bar, {
-      width: `${progress}%`,
-      scrollTrigger: {
-        trigger: bar,
-        start: "top 90%",
-      },
-      duration: 1.5,
-      ease: "power2.out"
-    });
-  });
-}
-
-animateProjectsSection() {
-  gsap.from(".project-card", {
-    scrollTrigger: {
-      trigger: "#projects",
-      start: "top 80%"
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.8,
-    stagger: 0.2
-  });
-}
-
-animateExperienceSection() {
-  gsap.from(".timeline-item", {
-    scrollTrigger: {
-      trigger: "#experience",
-      start: "top 80%"
-    },
-    opacity: 0,
-    x: -50,
-    duration: 0.8,
-    stagger: 0.2
-  });
-}
-
-animateContactSection() {
-  gsap.from("#contact .card", {
-    scrollTrigger: {
-      trigger: "#contact",
-      start: "top 80%"
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.8,
-    stagger: 0.1
-  });
-}
-
-setupEventListeners() {
-  this.setupLanguageSelector();
-
-  DOM.themeToggle.addEventListener("click", () => {
-    const isDark = document.body.classList.contains("dark");
-    this.setTheme(isDark ? "light" : "dark");
-  });
-
-  DOM.mobileMenuBtn.addEventListener("click", this.toggleMobileMenu.bind(this));
-
-  DOM.contactForm.addEventListener("submit", this.handleFormSubmit.bind(this));
-
-  this.setupSmoothScrolling();
-
-  this.initLenis();
-}
-
-setupLanguageSelector() {
-  DOM.langSelect.addEventListener("click", (e) => {
-    e.stopPropagation();
-    DOM.langDropdown.classList.toggle("hidden");
-  });
-
-  document.querySelectorAll(".lang-option").forEach(option => {
-    option.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.setLanguage(option.dataset.lang);
-      DOM.langDropdown.classList.add("hidden");
-    });
-  });
-
-  document.addEventListener("click", () => {
-    DOM.langDropdown.classList.add("hidden");
-  });
-}
-
-toggleMobileMenu() {
-  if (DOM.mobileMenu.classList.contains("hidden")) {
-    DOM.mobileMenu.classList.remove("hidden");
-    setTimeout(() => DOM.mobileMenu.classList.add("active"), 10);
-  } else {
-    DOM.mobileMenu.classList.remove("active");
-    setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
-  }
-}
-
-handleFormSubmit(e) {
-  e.preventDefault();
-
-  const formData = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
-    subject: document.getElementById("subject").value,
-    message: document.getElementById("message").value
-  };
-
-  console.log("Form submitted:", formData);
-  DOM.contactForm.reset();
-
-  this.showNotification("Message sent successfully!");
-}
-
-showNotification(message) {
-  alert(message);
-}
-
-setupSmoothScrolling() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = anchor.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.offsetTop - 70,
-          behavior: 'smooth'
-        });
-
-        this.closeMobileMenu();
+  
+    init() {
+      this.setupEventListeners();
+      this.loadPreferences();
+      this.initGSAPAnimations();
+    }
+  
+    loadPreferences() {
+      const language = localStorage.getItem("language") || "tr";
+      this.setLanguage(language);
+  
+      const theme = localStorage.getItem("theme") ||
+        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      this.setTheme(theme);
+    }
+  
+    setLanguage(lang) {
+      if (!translations[lang]) return;
+  
+      DOM.currentLang.textContent = LANGUAGES[lang].name;
+      DOM.currentLang.dataset.lang = lang;
+      DOM.currentFlag.src = LANGUAGES[lang].flag;
+      document.documentElement.lang = lang;
+  
+      document.querySelectorAll("[data-key]").forEach(element => {
+        const key = element.dataset.key;
+        if (translations[lang][key]) {
+          element.textContent = translations[lang][key];
+        }
+      });
+  
+      this.initTypingAnimation();
+      localStorage.setItem("language", lang);
+    }
+  
+    setTheme(theme) {
+      if (theme === "dark") {
+        document.body.classList.add("dark");
+        document.body.classList.remove("light");
+        DOM.lightIcon.style.display = "inline-block";
+        DOM.darkIcon.style.display = "none";
+      } else {
+        document.body.classList.add("light");
+        document.body.classList.remove("dark");
+        DOM.lightIcon.style.display = "none";
+        DOM.darkIcon.style.display = "inline-block";
       }
-    });
-  });
-}
+  
+      localStorage.setItem("theme", theme);
+    }
+  
+    initThreeJS() {
+      this.threeJS.scene = new THREE.Scene();
+  
+      const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
+      this.threeJS.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+      this.threeJS.camera.position.z = 5;
+  
+      this.threeJS.renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+      });
+      this.threeJS.renderer.setSize(width, height);
+      this.threeJS.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      DOM.threeContainer.appendChild(this.threeJS.renderer.domElement);
+  
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particlesCount = 500;
+      const posArray = new Float32Array(particlesCount * 3);
+  
+      for (let i = 0; i < particlesCount * 3; i++) {
+        posArray[i] = (Math.random() - 0.5) * 10;
+      }
+  
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+  
+      const particlesMaterial = new THREE.PointsMaterial({
+        size: 0.05,
+        color: 0xff6b00
+      });
+  
+      this.threeJS.particles = new THREE.Points(particlesGeometry, particlesMaterial);
+      this.threeJS.scene.add(this.threeJS.particles);
+  
+      const animate = () => {
+        requestAnimationFrame(animate);
+        this.threeJS.particles.rotation.x += 0.0005;
+        this.threeJS.particles.rotation.y += 0.0005;
+        this.threeJS.renderer.render(this.threeJS.scene, this.threeJS.camera);
+      };
+  
+      animate();
+      window.addEventListener('resize', this.handleResize.bind(this));
+    }
+  
+    handleResize() {
+      const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
+      this.threeJS.camera.aspect = width / height;
+      this.threeJS.camera.updateProjectionMatrix();
+      this.threeJS.renderer.setSize(width, height);
+    }
+  
+    initTypingAnimation() {
+      const lang = DOM.currentLang.dataset.lang;
+  
+      if (this.typedInstance) {
+        this.typedInstance.destroy();
+      }
+  
+      this.typedInstance = new Typed(DOM.typingElement, {
+        strings: translations[lang]["hero.typing"],
+        typeSpeed: 50,
+        backSpeed: 30,
+        backDelay: 2000,
+        startDelay: 1000,
+        loop: true
+      });
+    }
+  
+    initGSAPAnimations() {
+      if (typeof ScrollTrigger !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+      } else {
+        console.error("ScrollTrigger plugin not found.");
+        return;
+      }
+  
+      const projectCards = document.querySelectorAll(".project-card");
+  
+      projectCards.forEach((card, index) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+          },
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: index * 0.1
+        });
+      });
+  
+      this.animateHeroSection();
+      this.animateAboutSection();
+      this.animateSkillsSection();
+      this.animateExperienceSection();
+      this.animateContactSection();
+    }
+  
+    animateHeroSection() {
+      gsap.from(".hero-content h1", {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        delay: 0.2
+      });
+  
+      gsap.from(".hero-content p", {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        delay: 0.4
+      });
+  
+      gsap.from(".hero-content .btn", {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        delay: 0.6,
+        stagger: 0.2
+      });
+    }
+  
+    animateAboutSection() {
+      gsap.from("#about img, #about .rounded-lg", {
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top 80%"
+        },
+        opacity: 0,
+        x: -100,
+        duration: 1
+      });
+  
+      gsap.from("#about .md\\:w-1\\/2.md\\:pl-8", {
+        scrollTrigger: {
+          trigger: "#about",
+          start: "top 80%"
+        },
+        opacity: 0,
+        x: 100,
+        duration: 1
+      });
+    }
+  
+    animateSkillsSection() {
+      document.querySelectorAll(".progress-bar").forEach(bar => {
+        const progress = bar.dataset.progress;
+        gsap.to(bar, {
+          width: `${progress}%`,
+          scrollTrigger: {
+            trigger: bar,
+            start: "top 90%",
+          },
+          duration: 1.5,
+          ease: "power2.out"
+        });
+      });
+    }
+  
+    animateExperienceSection() {
+      gsap.from(".timeline-item", {
+        scrollTrigger: {
+          trigger: "#experience",
+          start: "top 80%"
+        },
+        opacity: 0,
+        x: -50,
+        duration: 0.8,
+        stagger: 0.2
+      });
+    }
+  
+    animateContactSection() {
+      gsap.from("#contact .card", {
+        scrollTrigger: {
+          trigger: "#contact",
+          start: "top 80%"
+        },
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        stagger: 0.1
+      });
+    }
+  
+    setupEventListeners() {
+      this.setupLanguageSelector();
+  
+      DOM.themeToggle.addEventListener("click", () => {
+        const isDark = document.body.classList.contains("dark");
+        this.setTheme(isDark ? "light" : "dark");
+      });
+  
+      DOM.mobileMenuBtn.addEventListener("click", this.toggleMobileMenu.bind(this));
+  
+      DOM.contactForm.addEventListener("submit", this.handleFormSubmit.bind(this));
+  
+      this.setupSmoothScrolling();
+      this.initLenis();
+    }
+  
+    setupLanguageSelector() {
+      DOM.langSelect.addEventListener("click", (e) => {
+        e.stopPropagation();
+        DOM.langDropdown.classList.toggle("hidden");
+      });
+  
+      document.querySelectorAll(".lang-option").forEach(option => {
+        option.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.setLanguage(option.dataset.lang);
+          DOM.langDropdown.classList.add("hidden");
+        });
+      });
+  
+      document.addEventListener("click", () => {
+        DOM.langDropdown.classList.add("hidden");
+      });
+    }
+  
+    toggleMobileMenu() {
+      if (DOM.mobileMenu.classList.contains("hidden")) {
+        DOM.mobileMenu.classList.remove("hidden");
+        setTimeout(() => DOM.mobileMenu.classList.add("active"), 10);
+      } else {
+        DOM.mobileMenu.classList.remove("active");
+        setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
+      }
+    }
+  
+    handleFormSubmit(e) {
+      e.preventDefault();
+  
+      const formData = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        subject: document.getElementById("subject").value,
+        message: document.getElementById("message").value
+      };
+  
+      console.log("Form submitted:", formData);
+      DOM.contactForm.reset();
+  
+      this.showNotification("Message sent successfully!");
+    }
+  
+    showNotification(message) {
+      alert(message);
+    }
+  
+    setupSmoothScrolling() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = anchor.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+  
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 70,
+              behavior: 'smooth'
+            });
+  
+            this.closeMobileMenu();
+          }
+        });
+      });
+    }
+  
+    closeMobileMenu() {
+      if (DOM.mobileMenu && !DOM.mobileMenu.classList.contains("hidden")) {
+        DOM.mobileMenu.classList.remove("active");
+        setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
+      }
+    }
+  
+    initLenis() {
+        const lenis = new Lenis({
+          duration: 1.5,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smooth: true
+        });
+      
+        lenis.on("scroll", ScrollTrigger.update);
+      
+        gsap.ticker.add((time) => {
+          lenis.raf(time * 1000);
+        });
+      
+        ScrollTrigger.scrollerProxy(document.body, {
+          scrollTop(value) {
+            return arguments.length ? lenis.scrollTo(value, { immediate: true }) : window.scrollY;
+          },
+          getBoundingClientRect() {
+            return {
+              top: 0,
+              left: 0,
+              width: window.innerWidth,
+              height: window.innerHeight
+            };
+          },
+          pinType: document.body.style.transform ? "transform" : "fixed"
+        });
+      
+        ScrollTrigger.defaults({ scroller: document.body });
+      
+        ScrollTrigger.refresh();
+      
+        this.lenis = lenis;
+      }
 
-closeMobileMenu() {
-  if (DOM.mobileMenu && !DOM.mobileMenu.classList.contains("hidden")) {
-    DOM.mobileMenu.classList.remove("active");
-    setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
   }
-}
-
-initLenis() {
-  const lenis = new Lenis({
-    autoRaf: true,
-    lerp: 0.05,
-    duration: 1.5,
-    smooth: true
+  
+  // Initialize the app when DOM is loaded
+  document.addEventListener("DOMContentLoaded", () => {
+    new PortfolioApp();
   });
-
-  lenis.on("scroll", ScrollTrigger.update);
-
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-  });
-
-  ScrollTrigger.scrollerProxy(document.body, {
-    scrollTop(value) {
-      return arguments.length ? lenis.scrollTo(value) : lenis.scroll.instance.scroll.y;
-    },
-    getBoundingClientRect() {
-      return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-    },
-    pinType: document.body.style.transform ? "transform" : "fixed"
-  });
-
-  ScrollTrigger.defaults({ scroller: document.body });
-
-  ScrollTrigger.refresh();
-
-  this.lenis = lenis;
-}
-}
-
-// Initialize the app when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-new PortfolioApp();
-});
