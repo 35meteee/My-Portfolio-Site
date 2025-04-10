@@ -100,33 +100,40 @@
   </section>
 
  <!-- About Section -->
-<section id="about" class="section" style="background-color: var(--secondary);">
+ <section id="about" class="section" style="background-color: var(--secondary);">
   <div class="container mx-auto px-4">
+    <!-- Başlık -->
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="about.title">Hakkımda</h2>
       <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
     </div>
-    
-    <div class="flex flex-col md:flex-row items-center">
-      <div class="md:w-1/2 mb-8 md:mb-0">
-        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300" style="max-width: 400px; margin: 0 auto;">
-          <!-- Placeholder for profile image with background image -->
-          <div class="bg-cover bg-center h-96" style="background-image: url('hakkimdafoto.jpg'); display: flex; align-items: center; justify-content: center;">
-          </div>
+
+    <!-- İçerik Grid -->
+    <div class="flex flex-col md:flex-row md:items-center">
+      <!-- Görsel -->
+      <div class="md:w-1/2 w-full mb-8 md:mb-0 px-4">
+        <div class="image-wrapper">
+          <img src="hakkimdafoto.jpg" alt="Fatih Mete Sert" class="about-image" />
         </div>
       </div>
-      
-      <div class="md:w-1/2 md:pl-8">
+
+      <!-- Metin -->
+      <div class="md:w-1/2 md:pl-8 px-4">
         <h3 class="text-2xl font-bold mb-4" data-key="about.subtitle">Dijital Deneyimler Yaratıyorum</h3>
-        <p class="mb-6" data-key="about.description1">Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.</p>
-        <p class="mb-6" data-key="about.description2">Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.</p>
-        
-        <div class="grid grid-cols-2 gap-4 mb-6">
+        <p class="mb-6" data-key="about.description1">
+          Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.
+        </p>
+        <p class="mb-6" data-key="about.description2">
+          Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.
+        </p>
+
+        <!-- Bilgiler -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <p><strong data-key="about.name.label">Ad</strong>: <span data-key="about.name.value">Fatih Mete Sert</span></p>
+            <p class="break-words"><strong data-key="about.name.label">Ad</strong>: <span data-key="about.name.value">Fatih Mete Sert</span></p>
           </div>
           <div>
-            <p><strong data-key="about.email.label">E-posta</strong>: <span data-key="about.email.value">fthmetesert@gmail.com</span></p>
+            <p class="break-words"><strong data-key="about.email.label">E-posta</strong>: <span data-key="about.email.value">fthmetesert@gmail.com</span></p>
           </div>
           <div>
             <p><strong data-key="about.phone.label">Telefon</strong>: <span data-key="about.phone.value">+90 552 818 7407</span></p>
@@ -135,12 +142,14 @@
             <p><strong data-key="about.location.label">Lokasyon</strong>: <span data-key="about.location.value">İzmir, Türkiye</span></p>
           </div>
         </div>
-        
+
+        <!-- Buton -->
         <a href="#" class="btn btn-primary" data-key="about.resume">Özgeçmişi İndir</a>
       </div>
     </div>
   </div>
 </section>
+
 
 
   <!-- Skills Section -->

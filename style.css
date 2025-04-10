@@ -142,6 +142,8 @@
     height: 100%;
     z-index: -1;
   }
+
+  
   
   .hero-content {
     position: relative;
@@ -227,6 +229,28 @@
       transform: translateY(-100%);
       transition: transform 0.3s;
     }
+
+    .image-wrapper {
+        width: 80vw;               /* Ekran genişliğinin %80’i kadar */
+        aspect-ratio: 1 / 1;       /* Her zaman kare olacak */
+        margin: 0 auto;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--secondary);
+      }
+    
+      .about-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        border-radius: 0.5rem;
+      }
+      
     
     .mobile-menu.active {
       transform: translateY(0);
