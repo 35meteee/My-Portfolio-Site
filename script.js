@@ -270,144 +270,184 @@ de: {
 }
 };
 
-// DOM Elements
-const DOM = {
-    currentLang: document.getElementById("current-lang"),
-    currentFlag: document.getElementById("current-flag"),
-    lightIcon: document.getElementById("light-icon"),
-    darkIcon: document.getElementById("dark-icon"),
-    typingElement: document.querySelector(".typing-text"),
-    threeContainer: document.getElementById("three-container"),
-    langSelect: document.querySelector(".lang-select"),
-    langDropdown: document.querySelector(".lang-dropdown"),
-    themeToggle: document.querySelector(".theme-toggle"),
-    mobileMenuBtn: document.querySelector(".mobile-menu-btn"),
-    mobileMenu: document.querySelector(".mobile-menu"),
-    contactForm: document.querySelector(".contact-form")
-  };
-  
-  // App Initialization
-  class PortfolioApp {
-    constructor() {
-      this.typedInstance = null;
-      this.threeJS = {
-        scene: null,
-        camera: null,
-        renderer: null,
-        particles: null
-      };
-      this.init();
+class PortfolioApp {
+  constructor() {
+    this.initDOM();
+    this.initState();
+    this.init();
+  }
+
+  initDOM() {
+    this.DOM = {
+      currentLang: document.getElementById("current-lang"),
+      currentFlag: document.getElementById("current-flag"),
+      lightIcon: document.getElementById("light-icon"),
+      darkIcon: document.getElementById("dark-icon"),
+      typingElement: document.querySelector(".typing-text"),
+      threeContainer: document.getElementById("three-container"),
+      langSelect: document.querySelector(".lang-select"),
+      langDropdown: document.querySelector(".lang-dropdown"),
+      themeToggle: document.querySelector(".theme-toggle"),
+      mobileMenuBtn: document.querySelector(".mobile-menu-btn"),
+      mobileMenu: document.querySelector(".mobile-menu"),
+      contactForm: document.querySelector(".contact-form")
+    };
+  }
+
+  initState() {
+    this.threeJS = {
+      scene: null,
+      camera: null,
+      renderer: null,
+      particles: null
+    };
+    this.typedInstance = null;
+    this.lenis = null;
+    this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  }
+
+  init() {
+    this.disableScrollRestoration();
+    this.loadPreferences();
+    this.initThreeJS();
+    this.initTypingAnimation();
+    this.initGSAPAnimations();
+    this.setupEventListeners();
+  }
+
+  disableScrollRestoration() {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
     }
-  
-    init() {
-      this.setupEventListeners();
-      this.loadPreferences();
-      this.initGSAPAnimations();
+    window.scrollTo(0, 0);
+    window.addEventListener('load', () => window.scrollTo(0, 0));
+    
+    if (this.isMobile) {
+      setTimeout(() => window.scrollTo(0, 0), 100);
     }
-  
-    loadPreferences() {
-      const language = localStorage.getItem("language") || "tr";
-      this.setLanguage(language);
-  
-      const theme = localStorage.getItem("theme") ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-      this.setTheme(theme);
-    }
-  
-    setLanguage(lang) {
-      if (!translations[lang]) return;
-  
-      DOM.currentLang.textContent = LANGUAGES[lang].name;
-      DOM.currentLang.dataset.lang = lang;
-      DOM.currentFlag.src = LANGUAGES[lang].flag;
-      document.documentElement.lang = lang;
-  
-      document.querySelectorAll("[data-key]").forEach(element => {
-        const key = element.dataset.key;
-        if (translations[lang][key]) {
-          element.textContent = translations[lang][key];
-        }
-      });
-  
-      this.initTypingAnimation();
-      localStorage.setItem("language", lang);
-    }
-  
-    setTheme(theme) {
-      if (theme === "dark") {
-        document.body.classList.add("dark");
-        document.body.classList.remove("light");
-        DOM.lightIcon.style.display = "inline-block";
-        DOM.darkIcon.style.display = "none";
-      } else {
-        document.body.classList.add("light");
-        document.body.classList.remove("dark");
-        DOM.lightIcon.style.display = "none";
-        DOM.darkIcon.style.display = "inline-block";
+  }
+
+  loadPreferences() {
+    window.scrollTo(0, 0);
+    this.showDefaultContent();
+    
+    const language = localStorage.getItem("language") || "tr";
+    this.setLanguage(language);
+
+    const theme = localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    this.setTheme(theme);
+  }
+
+  showDefaultContent() {
+    document.querySelectorAll("#about [data-key]").forEach(element => {
+      if (!element.textContent.trim()) {
+        element.textContent = element.dataset.default || element.textContent;
       }
-  
-      localStorage.setItem("theme", theme);
+    });
+  }
+
+  setLanguage(lang) {
+    if (!translations[lang]) {
+      console.error(`Dil verileri yüklenemedi: ${lang}`);
+      return;
     }
-  
-    initThreeJS() {
+
+    // Dil verilerini uygula
+    this.DOM.currentLang.textContent = LANGUAGES[lang].name;
+    this.DOM.currentLang.dataset.lang = lang;
+    this.DOM.currentFlag.src = LANGUAGES[lang].flag;
+    document.documentElement.lang = lang;
+
+    // Çevirileri uygula
+    document.querySelectorAll("[data-key]").forEach(element => {
+      const key = element.dataset.key;
+      if (translations[lang][key]) {
+        element.textContent = translations[lang][key];
+      }
+    });
+
+    this.initTypingAnimation();
+    localStorage.setItem("language", lang);
+  }
+
+  setTheme(theme) {
+    if (theme === "dark") {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
+      this.DOM.lightIcon.style.display = "inline-block";
+      this.DOM.darkIcon.style.display = "none";
+    } else {
+      document.body.classList.add("light");
+      document.body.classList.remove("dark");
+      this.DOM.lightIcon.style.display = "none";
+      this.DOM.darkIcon.style.display = "inline-block";
+    }
+    localStorage.setItem("theme", theme);
+  }
+
+  initThreeJS() {
+    try {
       this.threeJS.scene = new THREE.Scene();
-  
-      const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
+      const { clientWidth: width, clientHeight: height } = this.DOM.threeContainer;
+      
       this.threeJS.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
       this.threeJS.camera.position.z = 5;
-  
+
       this.threeJS.renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true
       });
       this.threeJS.renderer.setSize(width, height);
       this.threeJS.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      DOM.threeContainer.appendChild(this.threeJS.renderer.domElement);
-  
+      this.DOM.threeContainer.appendChild(this.threeJS.renderer.domElement);
+
+      // Particle sistemini oluştur
       const particlesGeometry = new THREE.BufferGeometry();
       const particlesCount = 500;
       const posArray = new Float32Array(particlesCount * 3);
-  
+
       for (let i = 0; i < particlesCount * 3; i++) {
         posArray[i] = (Math.random() - 0.5) * 10;
       }
-  
+
       particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-  
-      const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        color: 0xff6b00
-      });
-  
+      const particlesMaterial = new THREE.PointsMaterial({ size: 0.05, color: 0xff6b00 });
       this.threeJS.particles = new THREE.Points(particlesGeometry, particlesMaterial);
       this.threeJS.scene.add(this.threeJS.particles);
-  
+
+      // Animasyon döngüsü
       const animate = () => {
         requestAnimationFrame(animate);
         this.threeJS.particles.rotation.x += 0.0005;
         this.threeJS.particles.rotation.y += 0.0005;
         this.threeJS.renderer.render(this.threeJS.scene, this.threeJS.camera);
       };
-  
       animate();
+
       window.addEventListener('resize', this.handleResize.bind(this));
+    } catch (error) {
+      console.error("Three.js başlatılırken hata oluştu:", error);
     }
-  
-    handleResize() {
-      const { clientWidth: width, clientHeight: height } = DOM.threeContainer;
-      this.threeJS.camera.aspect = width / height;
-      this.threeJS.camera.updateProjectionMatrix();
-      this.threeJS.renderer.setSize(width, height);
-    }
-  
-    initTypingAnimation() {
-      const lang = DOM.currentLang.dataset.lang;
-  
+  }
+
+  handleResize() {
+    const { clientWidth: width, clientHeight: height } = this.DOM.threeContainer;
+    this.threeJS.camera.aspect = width / height;
+    this.threeJS.camera.updateProjectionMatrix();
+    this.threeJS.renderer.setSize(width, height);
+  }
+
+  initTypingAnimation() {
+    try {
+      const lang = this.DOM.currentLang.dataset.lang;
+      if (!translations[lang] || !translations[lang]["hero.typing"]) return;
+
       if (this.typedInstance) {
         this.typedInstance.destroy();
       }
-  
-      this.typedInstance = new Typed(DOM.typingElement, {
+
+      this.typedInstance = new Typed(this.DOM.typingElement, {
         strings: translations[lang]["hero.typing"],
         typeSpeed: 50,
         backSpeed: 30,
@@ -415,256 +455,426 @@ const DOM = {
         startDelay: 1000,
         loop: true
       });
+    } catch (error) {
+      console.error("Typed animasyonu başlatılırken hata oluştu:", error);
     }
-  
-    initGSAPAnimations() {
-      if (typeof ScrollTrigger !== "undefined") {
-        gsap.registerPlugin(ScrollTrigger);
-      } else {
-        console.error("ScrollTrigger plugin not found.");
-        return;
-      }
-  
-      const projectCards = document.querySelectorAll(".project-card");
-  
-      projectCards.forEach((card, index) => {
-        gsap.from(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-          },
-          opacity: 0,
-          y: 30,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: index * 0.1
-        });
+  }
+
+  initGSAPAnimations() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      console.error("GSAP veya ScrollTrigger yüklenmemiş");
+      return;
+    }
+
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Tüm section'lar için genel animasyon
+      gsap.utils.toArray("section").forEach(section => {
+        this.animateSection(section);
       });
-  
+
+      // Özel section animasyonları
       this.animateHeroSection();
       this.animateAboutSection();
       this.animateSkillsSection();
+      this.animateProjectsSection();
       this.animateExperienceSection();
+      this.animateEducationSection();
       this.animateContactSection();
+
+      // Progress bar animasyonları
+      this.animateProgressBars();
+
+    } catch (error) {
+      console.error("GSAP animasyonları başlatılırken hata oluştu:", error);
     }
-  
-    animateHeroSection() {
-      gsap.from(".hero-content h1", {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        delay: 0.2
-      });
-  
-      gsap.from(".hero-content p", {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        delay: 0.4
-      });
-  
-      gsap.from(".hero-content .btn", {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        delay: 0.6,
-        stagger: 0.2
-      });
-    }
-  
-    animateAboutSection() {
-      gsap.from("#about img, #about .rounded-lg", {
+  }
+
+  animateSection(section) {
+    const heading = section.querySelector('h2');
+    const subtitle = section.querySelector('.subtitle');
+    const content = section.querySelectorAll('.section-content > *');
+
+    // Başlık animasyonu
+    if (heading) {
+      gsap.from(heading, {
         scrollTrigger: {
-          trigger: "#about",
-          start: "top 80%"
-        },
-        opacity: 0,
-        x: -100,
-        duration: 1
-      });
-  
-      gsap.from("#about .md\\:w-1\\/2.md\\:pl-8", {
-        scrollTrigger: {
-          trigger: "#about",
-          start: "top 80%"
-        },
-        opacity: 0,
-        x: 100,
-        duration: 1
-      });
-    }
-  
-    animateSkillsSection() {
-      document.querySelectorAll(".progress-bar").forEach(bar => {
-        const progress = bar.dataset.progress;
-        gsap.to(bar, {
-          width: `${progress}%`,
-          scrollTrigger: {
-            trigger: bar,
-            start: "top 90%",
-          },
-          duration: 1.5,
-          ease: "power2.out"
-        });
-      });
-    }
-  
-    animateExperienceSection() {
-      gsap.from(".timeline-item", {
-        scrollTrigger: {
-          trigger: "#experience",
-          start: "top 80%"
-        },
-        opacity: 0,
-        x: -50,
-        duration: 0.8,
-        stagger: 0.2
-      });
-    }
-  
-    animateContactSection() {
-      gsap.from("#contact .card", {
-        scrollTrigger: {
-          trigger: "#contact",
-          start: "top 80%"
+          trigger: section,
+          start: "top 80%",
+          toggleActions: "play none none none"
         },
         opacity: 0,
         y: 50,
         duration: 0.8,
-        stagger: 0.1
+        ease: "power2.out"
       });
     }
-  
-    setupEventListeners() {
-      this.setupLanguageSelector();
-  
-      DOM.themeToggle.addEventListener("click", () => {
-        const isDark = document.body.classList.contains("dark");
-        this.setTheme(isDark ? "light" : "dark");
+
+    // Alt başlık animasyonu
+    if (subtitle) {
+      gsap.from(subtitle, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 75%",
+          toggleActions: "play none none none"
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        delay: 0.2,
+        ease: "power2.out"
       });
-  
-      DOM.mobileMenuBtn.addEventListener("click", this.toggleMobileMenu.bind(this));
-  
-      DOM.contactForm.addEventListener("submit", this.handleFormSubmit.bind(this));
-  
-      this.setupSmoothScrolling();
-      this.initLenis();
     }
+
+    // İçerik animasyonu
+    if (content.length > 0) {
+      gsap.from(content, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 70%",
+          toggleActions: "play none none none"
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        stagger: 0.15,
+        delay: 0.4,
+        ease: "power2.out"
+      });
+    }
+  }
+
+  animateHeroSection() {
+    const hero = document.querySelector('#home');
+    if (!hero) return;
+
+    gsap.from(hero.querySelector('h1'), {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      delay: 0.2
+    });
+
+    gsap.from(hero.querySelector('p'), {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      delay: 0.4
+    });
+
+    gsap.from(hero.querySelectorAll('.btn'), {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      delay: 0.6,
+      stagger: 0.2
+    });
+  }
+
+  // GSAP Animasyonları için güncellenmiş kod
+animateAboutSection() {
+  const about = document.querySelector('#about');
+  if (!about) return;
+
+  // Fotoğraf animasyonu - soldan sağa
+  gsap.from(about.querySelector('.about-image-wrapper'), {
+    scrollTrigger: {
+      trigger: about,
+      start: "top 75%",
+      toggleActions: "play none none none"
+    },
+    opacity: 0,
+    x: -100,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+
+  // Yazı içeriği animasyonu - sağdan sola
+  gsap.from(about.querySelector('.about-content-wrapper'), {
+    scrollTrigger: {
+      trigger: about,
+      start: "top 75%",
+      toggleActions: "play none none none"
+    },
+    opacity: 0,
+    x: 100,
+    duration: 0.8,
+    ease: "power2.out"
+  });
+
+  // İçerikteki öğelerin sıralı animasyonu
+  gsap.from(about.querySelectorAll('.about-content-wrapper > *'), {
+    scrollTrigger: {
+      trigger: about,
+      start: "top 70%"
+    },
+    opacity: 0,
+    y: 30,
+    duration: 0.6,
+    stagger: 0.15,
+    delay: 0.3,
+    ease: "power2.out"
+  });
+
+  // Özgeçmiş butonu için özel animasyon
+  gsap.from(about.querySelector('.btn-primary'), {
+    scrollTrigger: {
+      trigger: about,
+      start: "top 60%",
+    },
+    opacity: 0,
+    y: 30,
+    duration: 0.6,
+    delay: 0.4,
+    ease: "back.out"
+  });
+}
+
+  animateSkillsSection() {
+    const skills = document.querySelector('#skills');
+    if (!skills) return;
+
+    gsap.from(skills.querySelectorAll('.skill-category'), {
+      scrollTrigger: {
+        trigger: skills,
+        start: "top 70%"
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      stagger: 0.3,
+      ease: "power2.out"
+    });
+  }
+
+  animateProjectsSection() {
+    const projects = document.querySelector('#projects');
+    if (!projects) return;
+
+    gsap.from(projects.querySelectorAll('.project-card'), {
+      scrollTrigger: {
+        trigger: projects,
+        start: "top 70%"
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+  }
+
+  animateExperienceSection() {
+    const experience = document.querySelector('#experience');
+    if (!experience) return;
+
+    gsap.from(experience.querySelectorAll('.timeline-item'), {
+      scrollTrigger: {
+        trigger: experience,
+        start: "top 70%"
+      },
+      opacity: 0,
+      x: -50,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+  }
+
+  animateEducationSection() {
+    const education = document.querySelector('#education');
+    if (!education) return;
+
+    gsap.from(education.querySelectorAll('.timeline-item'), {
+      scrollTrigger: {
+        trigger: education,
+        start: "top 70%"
+      },
+      opacity: 0,
+      x: -50,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power2.out"
+    });
+  }
+
   
-    setupLanguageSelector() {
-      DOM.langSelect.addEventListener("click", (e) => {
+
+  animateContactSection() {
+    const contact = document.querySelector('#contact');
+    if (!contact) return;
+
+    gsap.from(contact.querySelectorAll('.card'), {
+      scrollTrigger: {
+        trigger: contact,
+        start: "top 70%"
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power2.out"
+    });
+  }
+
+  animateProgressBars() {
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+      const progress = bar.dataset.progress;
+      gsap.to(bar, {
+        width: `${progress}%`,
+        scrollTrigger: {
+          trigger: bar,
+          start: "top 90%",
+        },
+        duration: 1.5,
+        ease: "power2.out"
+      });
+    });
+  }
+
+  setupEventListeners() {
+    this.setupLanguageSelector();
+    this.setupThemeToggle();
+    this.setupMobileMenu();
+    this.setupContactForm();
+    this.setupSmoothScrolling();
+    this.initLenis();
+  }
+
+  setupLanguageSelector() {
+    this.DOM.langSelect?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.DOM.langDropdown.classList.toggle("hidden");
+    });
+
+    document.querySelectorAll(".lang-option").forEach(option => {
+      option.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        DOM.langDropdown.classList.toggle("hidden");
+        this.setLanguage(option.dataset.lang);
+        this.DOM.langDropdown.classList.add("hidden");
       });
-  
-      document.querySelectorAll(".lang-option").forEach(option => {
-        option.addEventListener("click", (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          this.setLanguage(option.dataset.lang);
-          DOM.langDropdown.classList.add("hidden");
-        });
-      });
-  
-      document.addEventListener("click", () => {
-        DOM.langDropdown.classList.add("hidden");
-      });
+    });
+
+    document.addEventListener("click", () => {
+      this.DOM.langDropdown?.classList.add("hidden");
+    });
+  }
+
+  setupThemeToggle() {
+    this.DOM.themeToggle?.addEventListener("click", () => {
+      const isDark = document.body.classList.contains("dark");
+      this.setTheme(isDark ? "light" : "dark");
+    });
+  }
+
+  setupMobileMenu() {
+    this.DOM.mobileMenuBtn?.addEventListener("click", this.toggleMobileMenu.bind(this));
+  }
+
+  toggleMobileMenu() {
+    if (this.DOM.mobileMenu?.classList.contains("hidden")) {
+      this.DOM.mobileMenu.classList.remove("hidden");
+      setTimeout(() => this.DOM.mobileMenu.classList.add("active"), 10);
+    } else {
+      this.DOM.mobileMenu?.classList.remove("active");
+      setTimeout(() => this.DOM.mobileMenu?.classList.add("hidden"), 300);
     }
-  
-    toggleMobileMenu() {
-      if (DOM.mobileMenu.classList.contains("hidden")) {
-        DOM.mobileMenu.classList.remove("hidden");
-        setTimeout(() => DOM.mobileMenu.classList.add("active"), 10);
-      } else {
-        DOM.mobileMenu.classList.remove("active");
-        setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
-      }
-    }
-  
-    handleFormSubmit(e) {
+  }
+
+  setupContactForm() {
+    this.DOM.contactForm?.addEventListener("submit", (e) => {
       e.preventDefault();
-  
       const formData = {
         name: document.getElementById("name").value,
         email: document.getElementById("email").value,
         subject: document.getElementById("subject").value,
         message: document.getElementById("message").value
       };
-  
       console.log("Form submitted:", formData);
-      DOM.contactForm.reset();
-  
+      this.DOM.contactForm.reset();
       this.showNotification("Message sent successfully!");
-    }
-  
-    showNotification(message) {
-      alert(message);
-    }
-  
-    setupSmoothScrolling() {
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-          e.preventDefault();
-          const targetId = anchor.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
-  
-          if (targetElement) {
-            window.scrollTo({
-              top: targetElement.offsetTop - 70,
-              behavior: 'smooth'
-            });
-  
-            this.closeMobileMenu();
-          }
-        });
-      });
-    }
-  
-    closeMobileMenu() {
-      if (DOM.mobileMenu && !DOM.mobileMenu.classList.contains("hidden")) {
-        DOM.mobileMenu.classList.remove("active");
-        setTimeout(() => DOM.mobileMenu.classList.add("hidden"), 300);
-      }
-    }
-  
-    initLenis() {
-        const lenis = new Lenis({
-          duration: 1.5,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smooth: true
-        });
-      
-        lenis.on("scroll", ScrollTrigger.update);
-      
-        gsap.ticker.add((time) => {
-          lenis.raf(time * 1000);
-        });
-      
-        ScrollTrigger.scrollerProxy(document.body, {
-          scrollTop(value) {
-            return arguments.length ? lenis.scrollTo(value, { immediate: true }) : window.scrollY;
-          },
-          getBoundingClientRect() {
-            return {
-              top: 0,
-              left: 0,
-              width: window.innerWidth,
-              height: window.innerHeight
-            };
-          },
-          pinType: document.body.style.transform ? "transform" : "fixed"
-        });
-      
-        ScrollTrigger.defaults({ scroller: document.body });
-      
-        ScrollTrigger.refresh();
-      
-        this.lenis = lenis;
-      }
-
+    });
   }
-  
-  // Initialize the app when DOM is loaded
-  document.addEventListener("DOMContentLoaded", () => {
-    new PortfolioApp();
-  });
+
+  showNotification(message) {
+    const notification = document.createElement("div");
+    notification.className = "fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg";
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+  }
+
+  setupSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = anchor.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 70,
+            behavior: 'smooth'
+          });
+          this.closeMobileMenu();
+        }
+      });
+    });
+  }
+
+  closeMobileMenu() {
+    if (this.DOM.mobileMenu && !this.DOM.mobileMenu.classList.contains("hidden")) {
+      this.DOM.mobileMenu.classList.remove("active");
+      setTimeout(() => this.DOM.mobileMenu.classList.add("hidden"), 300);
+    }
+  }
+
+  initLenis() {
+    if (typeof Lenis === 'undefined') {
+      console.error("Lenis yüklenmemiş");
+      return;
+    }
+
+    try {
+      this.lenis = new Lenis({
+        duration: 1.5,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true,
+        lerp: 0.1,
+        wheelMultiplier: 1,
+        gestureOrientation: 'vertical',
+        normalizeWheel: false,
+        autoResize: true
+      });
+
+      // Sayfa yüklendiğinde en üste git
+      this.lenis.scrollTo(0, { immediate: true });
+
+      // ScrollTrigger ile entegrasyon
+      this.lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add((time) => this.lenis.raf(time * 1000));
+
+      ScrollTrigger.scrollerProxy(document.body, {
+        scrollTop(value) {
+          return arguments.length ? this.lenis.scrollTo(value, { immediate: true }) : window.scrollY;
+        },
+        getBoundingClientRect() {
+          return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+        },
+        pinType: document.body.style.transform ? "transform" : "fixed"
+      });
+
+      ScrollTrigger.defaults({ scroller: document.body });
+      ScrollTrigger.refresh();
+
+    } catch (error) {
+      console.error("Lenis başlatılırken hata oluştu:", error);
+    }
+  }
+}
+
+// Uygulamayı başlat
+document.addEventListener("DOMContentLoaded", () => {
+  new PortfolioApp();
+});

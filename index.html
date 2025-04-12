@@ -81,70 +81,79 @@
   </header>
 
   <!-- Hero Section with Three.js -->
-  <section id="home" class="section min-h-screen flex items-center" style="padding-top: 7rem;">
-    <div id="three-container"></div>
-    <div class="container mx-auto px-4">
-      <div class="hero-content text-center md:text-left max-w-3xl">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6">
-          <span data-key="hero.greeting">Merhaba, ben</span>
-          <br>
-          <span class="typing-text" style="color: var(--primary);"></span>
-        </h1>
-        <p class="text-xl md:text-2xl mb-8" data-key="hero.subtitle">Etkileyici dijital deneyimler yaratmaya odaklanmış tam yığın geliştirici.</p>
-        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <a href="#projects" class="btn btn-primary" data-key="hero.cta1">Projelerimi Gör</a>
-          <a href="#contact" class="btn btn-outline" data-key="hero.cta2">İletişime Geç</a>
-        </div>
+<section id="home" class="hero-section min-h-screen flex items-center relative">
+  <div id="three-container"></div>
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="hero-content text-center md:text-left max-w-3xl">
+      <h1 class="text-4xl md:text-6xl font-bold mb-6">
+        <span data-key="hero.greeting">Merhaba, ben</span>
+        <br>
+        <span class="typing-text text-primary"></span>
+      </h1>
+      <p class="text-xl md:text-2xl mb-8" data-key="hero.subtitle">Etkileyici dijital deneyimler yaratmaya odaklanmış tam yığın geliştirici.</p>
+      <div class="hero-buttons flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+        <a href="#projects" class="hero-btn btn-primary" data-key="hero.cta1">
+          Projelerimi Gör
+        </a>
+        <a href="#contact" class="hero-btn btn-outline" data-key="hero.cta2">
+          İletişime Geç
+        </a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
- <!-- About Section -->
- <section id="about" class="section" style="background-color: var(--secondary);">
+<!-- Hakkımda Bölümü - Güncellenmiş Versiyon -->
+<section id="about" class="section bg-secondary">
   <div class="container mx-auto px-4">
-    <!-- Başlık -->
-    <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="about.title">Hakkımda</h2>
-      <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+    <div class="section-header">
+      <h2 data-key="about.title" data-default="Hakkımda">Hakkımda</h2>
+      <div class="title-divider"></div>
+      <p class="subtitle" data-key="about.subtitle" data-default="Dijital Deneyimler Yaratıyorum">Dijital Deneyimler Yaratıyorum</p>
     </div>
 
-    <!-- İçerik Grid -->
-    <div class="flex flex-col md:flex-row md:items-center">
-      <!-- Görsel -->
-      <div class="md:w-1/2 w-full mb-8 md:mb-0 px-4">
-        <div class="image-wrapper">
-          <img src="hakkimdafoto.jpg" alt="Fatih Mete Sert" class="about-image" />
+    <div class="flex flex-col md:flex-row md:items-center gap-12">
+      <!-- Fotoğraf Bölümü -->
+      <div class="md:w-1/2 w-full about-image-wrapper">
+        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+          <img src="hakkimdafoto.jpg" alt="Fatih Mete Sert" 
+               class="w-full h-auto object-cover min-h-[300px]"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80'">
         </div>
       </div>
 
-      <!-- Metin -->
-      <div class="md:w-1/2 md:pl-8 px-4">
-        <h3 class="text-2xl font-bold mb-4" data-key="about.subtitle">Dijital Deneyimler Yaratıyorum</h3>
-        <p class="mb-6" data-key="about.description1">
-          Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.
-        </p>
-        <p class="mb-6" data-key="about.description2">
-          Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.
-        </p>
+      <!-- İçerik Bölümü -->
+      <div class="md:w-1/2 text-text about-content-wrapper">
+        <div class="space-y-4 mb-6">
+          <p data-key="about.description1" data-default="Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.">
+            Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.
+          </p>
+          <p data-key="about.description2" data-default="Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.">
+            Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.
+          </p>
+        </div>
 
-        <!-- Bilgiler -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <p class="break-words"><strong data-key="about.name.label">Ad</strong>: <span data-key="about.name.value">Fatih Mete Sert</span></p>
+          <div class="bg-bg p-4 rounded-lg shadow-sm">
+            <p><strong class="text-primary" data-key="about.name.label" data-default="Ad">Ad</strong>: <span data-key="about.name.value" data-default="Fatih Mete Sert">Fatih Mete Sert</span></p>
           </div>
-          <div>
-            <p class="break-words"><strong data-key="about.email.label">E-posta</strong>: <span data-key="about.email.value">fthmetesert@gmail.com</span></p>
+          <div class="bg-bg p-4 rounded-lg shadow-sm">
+            <p><strong class="text-primary" data-key="about.email.label" data-default="E-posta">E-posta</strong>: <span data-key="about.email.value" data-default="fthmetesrt@gmail.com">fthmetesrt@gmail.com</span></p>
           </div>
-          <div>
-            <p><strong data-key="about.phone.label">Telefon</strong>: <span data-key="about.phone.value">+90 552 818 7407</span></p>
+          <div class="bg-bg p-4 rounded-lg shadow-sm">
+            <p><strong class="text-primary" data-key="about.phone.label" data-default="Telefon">Telefon</strong>: <span data-key="about.phone.value" data-default="+90 552 818 7407">+90 552 818 7407</span></p>
           </div>
-          <div>
-            <p><strong data-key="about.location.label">Lokasyon</strong>: <span data-key="about.location.value">İzmir, Türkiye</span></p>
+          <div class="bg-bg p-4 rounded-lg shadow-sm">
+            <p><strong class="text-primary" data-key="about.location.label" data-default="Lokasyon">Lokasyon</strong>: <span data-key="about.location.value" data-default="İzmir, Türkiye">İzmir, Türkiye</span></p>
           </div>
         </div>
 
-        <!-- Buton -->
-        <a href="#" class="btn btn-primary" data-key="about.resume">Özgeçmişi İndir</a>
+        <!-- Özgeçmiş İndirme Butonu - Güncellenmiş -->
+        <div class="mt-8 text-center md:text-left">
+          <a href="./assets/files/cv.pdf" download class="btn btn-primary inline-block px-8 py-3 text-lg font-semibold" data-key="about.resume" data-default="Özgeçmişi İndir">
+            Özgeçmişi İndir
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -155,10 +164,10 @@
   <!-- Skills Section -->
   <section id="skills" class="section">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="skills.title">Yeteneklerim</h2>
-        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
-        <p class="mt-4 max-w-2xl mx-auto" data-key="skills.subtitle">Yıllar içinde geliştirdiğim teknik ve yaratıcı yeteneklerim.</p>
+      <div class="section-header">
+        <h2 data-key="skills.title">Yeteneklerim</h2>
+        <div class="title-divider"></div>
+        <p class="subtitle" data-key="skills.subtitle">Yıllar içinde geliştirdiğim teknik ve yaratıcı yeteneklerim.</p>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -306,91 +315,124 @@
     </div>
   </section>
 
-  <!-- Projects Section -->
-<section id="projects" class="section" style="background-color: var(--secondary);">
+<!-- Projects Section - Modern Version -->
+<section id="projects" class="section">
   <div class="container mx-auto px-4">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="projects.title">Projelerim</h2>
-      <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
-      <p class="mt-4 max-w-2xl mx-auto" data-key="projects.subtitle">Geliştirdiğim bazı önemli projeler.</p>
+    <div class="section-header">
+      <h2 data-key="projects.title" class="text-4xl font-bold">Projelerim</h2>
+      <div class="title-divider mx-auto my-4 w-16 h-1 bg-primary rounded-full"></div>
+      <p class="subtitle text-lg opacity-80 max-w-2xl mx-auto" data-key="projects.subtitle">Yaratıcı çözümler ve yenilikçi teknolojilerle geliştirdiğim projeler</p>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
       <!-- Project 1 -->
-      <div class="card project-card overflow-hidden">
-        <!-- Project Image with background-image -->
-        <div class="project-image" style="background-image: url('proje1.jpg'); height: 200px; background-size: cover; background-position: center;"></div>
-        
-        <div class="p-4">
-          <h3 class="text-xl font-bold mb-2" data-key="projects.project1.title">3D İnteraktif Portföy</h3>
-          <p class="mb-4" data-key="projects.project1.description">Three.js ve GSAP kullanılarak oluşturulmuş, tam ekran 3D deneyim sunan interaktif bir portföy sitesi.</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">React</span>
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Three.js</span>
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">GSAP</span>
+      <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div class="project-image h-60 w-full relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
+          <img src="proje1.jpg" alt="3D Portföy" 
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'">
+          <div class="absolute bottom-0 left-0 p-6 z-20">
+            <h3 class="text-xl font-bold text-white" data-key="projects.project1.title">3D İnteraktif Portföy</h3>
           </div>
-          <div class="flex space-x-4">
-            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
-              <i class="fas fa-eye mr-1"></i> <span data-key="projects.live">Canlı Demo</span>
+        </div>
+        
+        <div class="p-6 bg-bg">
+          <p class="text-text mb-4 opacity-90" data-key="projects.project1.description">Three.js ve GSAP kullanılarak oluşturulmuş, tam ekran 3D deneyim sunan interaktif bir portföy sitesi.</p>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="tech-badge">React</span>
+            <span class="tech-badge">Three.js</span>
+            <span class="tech-badge">GSAP</span>
+          </div>
+          
+          <div class="flex justify-between items-center">
+            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-eye mr-2"></i>
+              <span data-key="projects.live">Canlı Demo</span>
             </a>
-            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
-              <i class="fab fa-github mr-1"></i> <span data-key="projects.code">Kaynak Kodu</span>
+            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-github mr-2"></i>
+              <span data-key="projects.code">Kaynak Kodu</span>
             </a>
           </div>
         </div>
       </div>
       
       <!-- Project 2 -->
-      <div class="card project-card overflow-hidden">
-        <!-- Project Image with background-image -->
-        <div class="project-image" style="background-image: url('proje2.jpg'); height: 200px; background-size: cover; background-position: center;"></div>
-        
-        <div class="p-4">
-          <h3 class="text-xl font-bold mb-2" data-key="projects.project2.title">E-ticaret Platformu</h3>
-          <p class="mb-4" data-key="projects.project2.description">Next.js, Tailwind CSS ve MongoDB ile oluşturulmuş, tam özellikli modern bir e-ticaret platformu.</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Next.js</span>
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Tailwind</span>
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">MongoDB</span>
+      <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div class="project-image h-60 w-full relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
+          <img src="proje2.jpg" alt="E-ticaret Platformu" 
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'">
+          <div class="absolute bottom-0 left-0 p-6 z-20">
+            <h3 class="text-xl font-bold text-white" data-key="projects.project2.title">E-ticaret Platformu</h3>
           </div>
-          <div class="flex space-x-4">
-            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
-              <i class="fas fa-eye mr-1"></i> <span data-key="projects.live">Canlı Demo</span>
+        </div>
+        
+        <div class="p-6 bg-bg">
+          <p class="text-text mb-4 opacity-90" data-key="projects.project2.description">Next.js, Tailwind CSS ve MongoDB ile oluşturulmuş, tam özellikli modern bir e-ticaret platformu.</p>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="tech-badge">Next.js</span>
+            <span class="tech-badge">Tailwind</span>
+            <span class="tech-badge">MongoDB</span>
+          </div>
+          
+          <div class="flex justify-between items-center">
+            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-eye mr-2"></i>
+              <span data-key="projects.live">Canlı Demo</span>
             </a>
-            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
-              <i class="fab fa-github mr-1"></i> <span data-key="projects.code">Kaynak Kodu</span>
+            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-github mr-2"></i>
+              <span data-key="projects.code">Kaynak Kodu</span>
             </a>
           </div>
         </div>
       </div>
       
       <!-- Project 3 -->
-      <div class="card project-card overflow-hidden">
-        <!-- Project Image with background-image -->
-        <div class="project-image" style="background-image: url('proje3.jpg'); height: 200px; background-size: cover; background-position: center;"></div>
-        
-        <div class="p-4">
-          <h3 class="text-xl font-bold mb-2" data-key="projects.project3.title">İçerik Yönetim Sistemi</h3>
-          <p class="mb-4" data-key="projects.project3.description">Vue.js ve Firebase kullanılarak geliştirilmiş, kullanıcı dostu bir içerik yönetim sistemi.</p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Vue.js</span>
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">Firebase</span>
-            <span class="px-2 py-1 text-xs rounded" style="background-color: var(--primary); color: white;">SCSS</span>
+      <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div class="project-image h-60 w-full relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
+          <img src="proje3.jpg" alt="İçerik Yönetim Sistemi" 
+               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80'">
+          <div class="absolute bottom-0 left-0 p-6 z-20">
+            <h3 class="text-xl font-bold text-white" data-key="projects.project3.title">İçerik Yönetim Sistemi</h3>
           </div>
-          <div class="flex space-x-4">
-            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
-              <i class="fas fa-eye mr-1"></i> <span data-key="projects.live">Canlı Demo</span>
+        </div>
+        
+        <div class="p-6 bg-bg">
+          <p class="text-text mb-4 opacity-90" data-key="projects.project3.description">Vue.js ve Firebase kullanılarak geliştirilmiş, kullanıcı dostu bir içerik yönetim sistemi.</p>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="tech-badge">Vue.js</span>
+            <span class="tech-badge">Firebase</span>
+            <span class="tech-badge">SCSS</span>
+          </div>
+          
+          <div class="flex justify-between items-center">
+            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+              <i class="fas fa-eye mr-2"></i>
+              <span data-key="projects.live">Canlı Demo</span>
             </a>
-            <a href="#" class="text-sm font-semibold" style="color: var(--primary);">
-              <i class="fab fa-github mr-1"></i> <span data-key="projects.code">Kaynak Kodu</span>
+            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+              <i class="fab fa-github mr-2"></i>
+              <span data-key="projects.code">Kaynak Kodu</span>
             </a>
           </div>
         </div>
       </div>
     </div>
     
-    <div class="text-center mt-12">
-      <a href="#" class="btn btn-primary" data-key="projects.viewAll">Tüm Projeleri Gör</a>
+    <div class="text-center mt-16">
+      <a href="#" class="btn-primary inline-flex items-center px-8 py-3 rounded-lg text-lg font-semibold transition-all hover:scale-105">
+        <span data-key="projects.viewAll">Tüm Projeleri Gör</span>
+        <i class="fas fa-arrow-right ml-2"></i>
+      </a>
     </div>
   </div>
 </section>
@@ -399,10 +441,10 @@
   <!-- Experience Section -->
   <section id="experience" class="section">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="experience.title">Deneyim</h2>
-        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
-        <p class="mt-4 max-w-2xl mx-auto" data-key="experience.subtitle">Şu anda profesyonel iş deneyimim bulunmamaktadır, ancak kişisel projelerim ve eğitimlerimle kendimi sürekli geliştiriyorum.</p>
+      <div class="section-header">
+        <h2 data-key="experience.title">Deneyim</h2>
+        <div class="title-divider"></div>
+        <p class="subtitle" data-key="experience.subtitle">Şu anda profesyonel iş deneyimim bulunmamaktadır, ancak kişisel projelerim ve eğitimlerimle kendimi sürekli geliştiriyorum.</p>
       </div>
     </div>
   </section>
@@ -410,9 +452,9 @@
   <!-- Education Section -->
   <section id="education" class="section" style="background-color: var(--secondary);">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="education.title">Eğitim</h2>
-        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
+      <div class="section-header">
+        <h2 data-key="education.title">Eğitim</h2>
+        <div class="title-divider"></div>
       </div>
       
       <div class="max-w-3xl mx-auto">
@@ -439,10 +481,10 @@
   <!-- Contact Section -->
   <section id="contact" class="section" style="background-color: var(--secondary);">
     <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-2" data-key="contact.title">İletişime Geç</h2>
-        <div class="w-16 h-1 mx-auto" style="background-color: var(--primary);"></div>
-        <p class="mt-4 max-w-2xl mx-auto" data-key="contact.subtitle">Benimle iletişime geçmek veya bir proje hakkında konuşmak için aşağıdaki bilgileri kullanabilirsiniz.</p>
+      <div class="section-header">
+        <h2 data-key="contact.title">İletişime Geç</h2>
+        <div class="title-divider"></div>
+        <p class="subtitle" data-key="contact.subtitle">Benimle iletişime geçmek veya bir proje hakkında konuşmak için aşağıdaki bilgileri kullanabilirsiniz.</p>
       </div>
       
       <div class="flex flex-col md:flex-row gap-8">
@@ -543,10 +585,11 @@
   </footer>
 
   <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.1/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.1/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.0/dist/lenis.min.js"></script>
   <script src="script.js"></script>
  
 </body>
