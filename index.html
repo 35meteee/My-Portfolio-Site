@@ -17,10 +17,10 @@
       <div class="flex justify-between items-center">
         <a href="index.html" class="text-2xl font-bold" style="color: var(--primary);">PORTFOLIO</a>
         
-        <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-4 md:space-x-6">
           <!-- Language Selector -->
-          <div class="relative group">
-            <div class="lang-select flex items-center">
+          <div class="relative group hidden md:block">
+            <div class="lang-select flex items-center cursor-pointer">
               <img id="current-flag" src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/tr.svg" alt="Türkçe" class="lang-flag">
               <span id="current-lang" class="mr-2" data-lang="tr">Türkçe</span>
               <i class="fas fa-chevron-down text-sm"></i>
@@ -42,19 +42,19 @@
           </div>
           
           <!-- Theme Toggle -->
-          <div class="theme-toggle">
+          <div class="theme-toggle cursor-pointer">
             <i class="fas fa-sun text-xl" id="light-icon" style="display: inline-block;"></i>
             <i class="fas fa-moon text-xl" id="dark-icon" style="display: none;"></i>
           </div>
           
           <!-- Mobile Menu Toggle -->
-          <div class="mobile-menu-btn block md:hidden">
+          <div class="mobile-menu-btn block md:hidden cursor-pointer">
             <i class="fas fa-bars text-xl"></i>
           </div>
           
           <!-- Desktop Navigation -->
           <nav class="desktop-menu hidden md:block">
-            <ul class="flex space-x-6 nav-links">
+            <ul class="flex space-x-4 md:space-x-6 nav-links">
               <li><a href="#home" class="nav-link" data-key="nav.home">Ana Sayfa</a></li>
               <li><a href="#about" class="nav-link" data-key="nav.about">Hakkımda</a></li>
               <li><a href="#skills" class="nav-link" data-key="nav.skills">Yetenekler</a></li>
@@ -68,98 +68,125 @@
     </div>
     
     <!-- Mobile Navigation -->
-    <div class="mobile-menu hidden">
-      <ul class="space-y-3 nav-links">
-        <li><a href="#home" class="block py-2" data-key="nav.home">Ana Sayfa</a></li>
-        <li><a href="#about" class="block py-2" data-key="nav.about">Hakkımda</a></li>
-        <li><a href="#skills" class="block py-2" data-key="nav.skills">Yetenekler</a></li>
-        <li><a href="#projects" class="block py-2" data-key="nav.projects">Projeler</a></li>
-        <li><a href="#experience" class="block py-2" data-key="nav.experience">Deneyim</a></li>
-        <li><a href="#contact" class="block py-2" data-key="nav.contact">İletişim</a></li>
-      </ul>
+    <div class="mobile-menu hidden md:hidden fixed top-16 left-0 right-0 bg-bg shadow-lg transition-all duration-300 transform -translate-y-full">
+      <div class="container mx-auto px-4 py-4">
+        <div class="mb-4">
+          <!-- Mobile Language Selector -->
+          <div class="relative">
+            <div class="lang-select-mobile flex items-center justify-between p-2 rounded bg-secondary cursor-pointer">
+              <div class="flex items-center">
+                <img id="current-flag-mobile" src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/tr.svg" alt="Türkçe" class="lang-flag">
+                <span id="current-lang-mobile" class="ml-2" data-lang="tr">Türkçe</span>
+              </div>
+              <i class="fas fa-chevron-down text-sm"></i>
+            </div>
+            <div class="lang-dropdown-mobile absolute left-0 right-0 mt-1 bg-secondary shadow-lg rounded-md p-2 hidden z-50">
+              <div class="lang-option-mobile py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center" data-lang="tr">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/tr.svg" alt="Türkçe" class="lang-flag">
+                <span class="ml-2">Türkçe</span>
+              </div>
+              <div class="lang-option-mobile py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center" data-lang="en">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/gb.svg" alt="English" class="lang-flag">
+                <span class="ml-2">English</span>
+              </div>
+              <div class="lang-option-mobile py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer flex items-center" data-lang="de">
+                <img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/flags/4x3/de.svg" alt="Deutsch" class="lang-flag">
+                <span class="ml-2">Deutsch</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <ul class="space-y-2 nav-links">
+          <li><a href="#home" class="block py-2 px-2 rounded hover:bg-secondary transition-colors" data-key="nav.home">Ana Sayfa</a></li>
+          <li><a href="#about" class="block py-2 px-2 rounded hover:bg-secondary transition-colors" data-key="nav.about">Hakkımda</a></li>
+          <li><a href="#skills" class="block py-2 px-2 rounded hover:bg-secondary transition-colors" data-key="nav.skills">Yetenekler</a></li>
+          <li><a href="#projects" class="block py-2 px-2 rounded hover:bg-secondary transition-colors" data-key="nav.projects">Projeler</a></li>
+          <li><a href="#experience" class="block py-2 px-2 rounded hover:bg-secondary transition-colors" data-key="nav.experience">Deneyim</a></li>
+          <li><a href="#contact" class="block py-2 px-2 rounded hover:bg-secondary transition-colors" data-key="nav.contact">İletişim</a></li>
+        </ul>
+      </div>
     </div>
   </header>
 
   <!-- Hero Section with Three.js -->
-<section id="home" class="hero-section min-h-screen flex items-center relative">
-  <div id="three-container"></div>
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="hero-content text-center md:text-left max-w-3xl">
-      <h1 class="text-4xl md:text-6xl font-bold mb-6">
-        <span data-key="hero.greeting">Merhaba, ben</span>
-        <br>
-        <span class="typing-text text-primary"></span>
-      </h1>
-      <p class="text-xl md:text-2xl mb-8" data-key="hero.subtitle">Etkileyici dijital deneyimler yaratmaya odaklanmış tam yığın geliştirici.</p>
-      <div class="hero-buttons flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-        <a href="#projects" class="hero-btn btn-primary" data-key="hero.cta1">
-          Projelerimi Gör
-        </a>
-        <a href="#contact" class="hero-btn btn-outline" data-key="hero.cta2">
-          İletişime Geç
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Hakkımda Bölümü - Güncellenmiş Versiyon -->
-<section id="about" class="section bg-secondary">
-  <div class="container mx-auto px-4">
-    <div class="section-header">
-      <h2 data-key="about.title" data-default="Hakkımda">Hakkımda</h2>
-      <div class="title-divider"></div>
-      <p class="subtitle" data-key="about.subtitle" data-default="Dijital Deneyimler Yaratıyorum">Dijital Deneyimler Yaratıyorum</p>
-    </div>
-
-    <div class="flex flex-col md:flex-row md:items-center gap-12">
-      <!-- Fotoğraf Bölümü -->
-      <div class="md:w-1/2 w-full about-image-wrapper">
-        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
-          <img src="hakkimdafoto.jpg" alt="Fatih Mete Sert" 
-               class="w-full h-auto object-cover min-h-[300px]"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80'">
-        </div>
-      </div>
-
-      <!-- İçerik Bölümü -->
-      <div class="md:w-1/2 text-text about-content-wrapper">
-        <div class="space-y-4 mb-6">
-          <p data-key="about.description1" data-default="Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.">
-            Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.
-          </p>
-          <p data-key="about.description2" data-default="Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.">
-            Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div class="bg-bg p-4 rounded-lg shadow-sm">
-            <p><strong class="text-primary" data-key="about.name.label" data-default="Ad">Ad</strong>: <span data-key="about.name.value" data-default="Fatih Mete Sert">Fatih Mete Sert</span></p>
-          </div>
-          <div class="bg-bg p-4 rounded-lg shadow-sm">
-            <p><strong class="text-primary" data-key="about.email.label" data-default="E-posta">E-posta</strong>: <span data-key="about.email.value" data-default="fthmetesrt@gmail.com">fthmetesrt@gmail.com</span></p>
-          </div>
-          <div class="bg-bg p-4 rounded-lg shadow-sm">
-            <p><strong class="text-primary" data-key="about.phone.label" data-default="Telefon">Telefon</strong>: <span data-key="about.phone.value" data-default="+90 552 818 7407">+90 552 818 7407</span></p>
-          </div>
-          <div class="bg-bg p-4 rounded-lg shadow-sm">
-            <p><strong class="text-primary" data-key="about.location.label" data-default="Lokasyon">Lokasyon</strong>: <span data-key="about.location.value" data-default="İzmir, Türkiye">İzmir, Türkiye</span></p>
-          </div>
-        </div>
-
-        <!-- Özgeçmiş İndirme Butonu - Güncellenmiş -->
-        <div class="mt-8 text-center md:text-left">
-          <a href="./assets/files/cv.pdf" download class="btn btn-primary inline-block px-8 py-3 text-lg font-semibold" data-key="about.resume" data-default="Özgeçmişi İndir">
-            Özgeçmişi İndir
+  <section id="home" class="hero-section min-h-screen flex items-center relative">
+    <div id="three-container"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="hero-content text-center md:text-left max-w-3xl">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          <span data-key="hero.greeting">Merhaba, ben</span>
+          <br>
+          <span class="typing-text text-primary"></span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8" data-key="hero.subtitle">Etkileyici dijital deneyimler yaratmaya odaklanmış tam yığın geliştirici.</p>
+        <div class="hero-buttons flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+          <a href="#projects" class="hero-btn btn-primary" data-key="hero.cta1">
+            Projelerimi Gör
+          </a>
+          <a href="#contact" class="hero-btn btn-outline" data-key="hero.cta2">
+            İletişime Geç
           </a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- Hakkımda Bölümü -->
+  <section id="about" class="section bg-secondary">
+    <div class="container mx-auto px-4">
+      <div class="section-header">
+        <h2 data-key="about.title" data-default="Hakkımda">Hakkımda</h2>
+        <div class="title-divider"></div>
+        <p class="subtitle" data-key="about.subtitle" data-default="Dijital Deneyimler Yaratıyorum">Dijital Deneyimler Yaratıyorum</p>
+      </div>
 
+      <div class="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+        <!-- Fotoğraf Bölümü -->
+        <div class="md:w-1/2 w-full about-image-wrapper">
+          <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300">
+            <img src="hakkimdafoto.jpg" alt="Fatih Mete Sert" 
+                 class="w-full h-auto object-cover min-h-[300px]"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80'">
+          </div>
+        </div>
+
+        <!-- İçerik Bölümü -->
+        <div class="md:w-1/2 text-text about-content-wrapper">
+          <div class="space-y-4 mb-6">
+            <p data-key="about.description1" data-default="Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.">
+              Web geliştirme ve tasarım tutkumu keşfettiğim 1 yıllık profesyonel deneyime sahibim. Modern teknolojiler ve yaratıcı çözümler kullanarak estetik ve işlevsel web uygulamaları oluşturmaya odaklanıyorum.
+            </p>
+            <p data-key="about.description2" data-default="Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.">
+              Three.js ve GSAP gibi modern kütüphaneleri kullanmadaki uzmanlığım, etkileyici ve akılda kalıcı kullanıcı deneyimleri yaratmama olanak tanır. Her projede, teknik mükemmellik ve yaratıcı tasarım arasında mükemmel bir denge kurmayı amaçlıyorum.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="bg-bg p-4 rounded-lg shadow-sm">
+              <p><strong class="text-primary" data-key="about.name.label" data-default="Ad">Ad</strong>: <span data-key="about.name.value" data-default="Fatih Mete Sert">Fatih Mete Sert</span></p>
+            </div>
+            <div class="bg-bg p-4 rounded-lg shadow-sm">
+              <p><strong class="text-primary" data-key="about.email.label" data-default="E-posta">E-posta</strong>: <span data-key="about.email.value" data-default="fthmetesrt@gmail.com">fthmetesrt@gmail.com</span></p>
+            </div>
+            <div class="bg-bg p-4 rounded-lg shadow-sm">
+              <p><strong class="text-primary" data-key="about.phone.label" data-default="Telefon">Telefon</strong>: <span data-key="about.phone.value" data-default="+90 552 818 7407">+90 552 818 7407</span></p>
+            </div>
+            <div class="bg-bg p-4 rounded-lg shadow-sm">
+              <p><strong class="text-primary" data-key="about.location.label" data-default="Lokasyon">Lokasyon</strong>: <span data-key="about.location.value" data-default="İzmir, Türkiye">İzmir, Türkiye</span></p>
+            </div>
+          </div>
+
+          <!-- Özgeçmiş İndirme Butonu -->
+          <div class="mt-8 text-center md:text-left">
+            <a href="./assets/files/cv.pdf" download class="btn btn-primary inline-block px-8 py-3 text-lg font-semibold" data-key="about.resume" data-default="Özgeçmişi İndir">
+              Özgeçmişi İndir
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Skills Section -->
   <section id="skills" class="section">
@@ -315,128 +342,127 @@
     </div>
   </section>
 
-<!-- Projects Section - Modern Version -->
-<section id="projects" class="section">
-  <div class="container mx-auto px-4">
-    <div class="section-header">
-      <h2 data-key="projects.title" class="text-4xl font-bold">Projelerim</h2>
-      <div class="title-divider mx-auto my-4 w-16 h-1 bg-primary rounded-full"></div>
-      <p class="subtitle text-lg opacity-80 max-w-2xl mx-auto" data-key="projects.subtitle">Yaratıcı çözümler ve yenilikçi teknolojilerle geliştirdiğim projeler</p>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-      <!-- Project 1 -->
-      <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="project-image h-60 w-full relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
-          <img src="proje1.jpg" alt="3D Portföy" 
-               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'">
-          <div class="absolute bottom-0 left-0 p-6 z-20">
-            <h3 class="text-xl font-bold text-white" data-key="projects.project1.title">3D İnteraktif Portföy</h3>
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <div class="container mx-auto px-4">
+      <div class="section-header">
+        <h2 data-key="projects.title" class="text-4xl font-bold">Projelerim</h2>
+        <div class="title-divider mx-auto my-4 w-16 h-1 bg-primary rounded-full"></div>
+        <p class="subtitle text-lg opacity-80 max-w-2xl mx-auto" data-key="projects.subtitle">Yaratıcı çözümler ve yenilikçi teknolojilerle geliştirdiğim projeler</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        <!-- Project 1 -->
+        <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+          <div class="project-image h-60 w-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
+            <img src="proje1.jpg" alt="3D Portföy" 
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'">
+            <div class="absolute bottom-0 left-0 p-6 z-20">
+              <h3 class="text-xl font-bold text-white" data-key="projects.project1.title">3D İnteraktif Portföy</h3>
+            </div>
+          </div>
+          
+          <div class="p-6 bg-bg">
+            <p class="text-text mb-4 opacity-90" data-key="projects.project1.description">Three.js ve GSAP kullanılarak oluşturulmuş, tam ekran 3D deneyim sunan interaktif bir portföy sitesi.</p>
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tech-badge">React</span>
+              <span class="tech-badge">Three.js</span>
+              <span class="tech-badge">GSAP</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-eye mr-2"></i>
+                <span data-key="projects.live">Canlı Demo</span>
+              </a>
+              <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github mr-2"></i>
+                <span data-key="projects.code">Kaynak Kodu</span>
+              </a>
+            </div>
           </div>
         </div>
         
-        <div class="p-6 bg-bg">
-          <p class="text-text mb-4 opacity-90" data-key="projects.project1.description">Three.js ve GSAP kullanılarak oluşturulmuş, tam ekran 3D deneyim sunan interaktif bir portföy sitesi.</p>
-          
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="tech-badge">React</span>
-            <span class="tech-badge">Three.js</span>
-            <span class="tech-badge">GSAP</span>
+        <!-- Project 2 -->
+        <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+          <div class="project-image h-60 w-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
+            <img src="proje2.jpg" alt="E-ticaret Platformu" 
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'">
+            <div class="absolute bottom-0 left-0 p-6 z-20">
+              <h3 class="text-xl font-bold text-white" data-key="projects.project2.title">E-ticaret Platformu</h3>
+            </div>
           </div>
           
-          <div class="flex justify-between items-center">
-            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-              <i class="fas fa-eye mr-2"></i>
-              <span data-key="projects.live">Canlı Demo</span>
-            </a>
-            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-              <i class="fab fa-github mr-2"></i>
-              <span data-key="projects.code">Kaynak Kodu</span>
-            </a>
+          <div class="p-6 bg-bg">
+            <p class="text-text mb-4 opacity-90" data-key="projects.project2.description">Next.js, Tailwind CSS ve MongoDB ile oluşturulmuş, tam özellikli modern bir e-ticaret platformu.</p>
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tech-badge">Next.js</span>
+              <span class="tech-badge">Tailwind</span>
+              <span class="tech-badge">MongoDB</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-eye mr-2"></i>
+                <span data-key="projects.live">Canlı Demo</span>
+              </a>
+              <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github mr-2"></i>
+                <span data-key="projects.code">Kaynak Kodu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Project 3 -->
+        <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+          <div class="project-image h-60 w-full relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
+            <img src="proje3.jpg" alt="İçerik Yönetim Sistemi" 
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80'">
+            <div class="absolute bottom-0 left-0 p-6 z-20">
+              <h3 class="text-xl font-bold text-white" data-key="projects.project3.title">İçerik Yönetim Sistemi</h3>
+            </div>
+          </div>
+          
+          <div class="p-6 bg-bg">
+            <p class="text-text mb-4 opacity-90" data-key="projects.project3.description">Vue.js ve Firebase kullanılarak geliştirilmiş, kullanıcı dostu bir içerik yönetim sistemi.</p>
+            
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="tech-badge">Vue.js</span>
+              <span class="tech-badge">Firebase</span>
+              <span class="tech-badge">SCSS</span>
+            </div>
+            
+            <div class="flex justify-between items-center">
+              <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-eye mr-2"></i>
+                <span data-key="projects.live">Canlı Demo</span>
+              </a>
+              <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-github mr-2"></i>
+                <span data-key="projects.code">Kaynak Kodu</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
       
-      <!-- Project 2 -->
-      <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="project-image h-60 w-full relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
-          <img src="proje2.jpg" alt="E-ticaret Platformu" 
-               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80'">
-          <div class="absolute bottom-0 left-0 p-6 z-20">
-            <h3 class="text-xl font-bold text-white" data-key="projects.project2.title">E-ticaret Platformu</h3>
-          </div>
-        </div>
-        
-        <div class="p-6 bg-bg">
-          <p class="text-text mb-4 opacity-90" data-key="projects.project2.description">Next.js, Tailwind CSS ve MongoDB ile oluşturulmuş, tam özellikli modern bir e-ticaret platformu.</p>
-          
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="tech-badge">Next.js</span>
-            <span class="tech-badge">Tailwind</span>
-            <span class="tech-badge">MongoDB</span>
-          </div>
-          
-          <div class="flex justify-between items-center">
-            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-              <i class="fas fa-eye mr-2"></i>
-              <span data-key="projects.live">Canlı Demo</span>
-            </a>
-            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-              <i class="fab fa-github mr-2"></i>
-              <span data-key="projects.code">Kaynak Kodu</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Project 3 -->
-      <div class="project-card group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div class="project-image h-60 w-full relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 z-10"></div>
-          <img src="proje3.jpg" alt="İçerik Yönetim Sistemi" 
-               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80'">
-          <div class="absolute bottom-0 left-0 p-6 z-20">
-            <h3 class="text-xl font-bold text-white" data-key="projects.project3.title">İçerik Yönetim Sistemi</h3>
-          </div>
-        </div>
-        
-        <div class="p-6 bg-bg">
-          <p class="text-text mb-4 opacity-90" data-key="projects.project3.description">Vue.js ve Firebase kullanılarak geliştirilmiş, kullanıcı dostu bir içerik yönetim sistemi.</p>
-          
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="tech-badge">Vue.js</span>
-            <span class="tech-badge">Firebase</span>
-            <span class="tech-badge">SCSS</span>
-          </div>
-          
-          <div class="flex justify-between items-center">
-            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-              <i class="fas fa-eye mr-2"></i>
-              <span data-key="projects.live">Canlı Demo</span>
-            </a>
-            <a href="#" class="project-link" target="_blank" rel="noopener noreferrer">
-              <i class="fab fa-github mr-2"></i>
-              <span data-key="projects.code">Kaynak Kodu</span>
-            </a>
-          </div>
-        </div>
+      <div class="text-center mt-16">
+        <a href="#" class="btn-primary inline-flex items-center px-8 py-3 rounded-lg text-lg font-semibold transition-all hover:scale-105">
+          <span data-key="projects.viewAll">Tüm Projeleri Gör</span>
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
       </div>
     </div>
-    
-    <div class="text-center mt-16">
-      <a href="#" class="btn-primary inline-flex items-center px-8 py-3 rounded-lg text-lg font-semibold transition-all hover:scale-105">
-        <span data-key="projects.viewAll">Tüm Projeleri Gör</span>
-        <i class="fas fa-arrow-right ml-2"></i>
-      </a>
-    </div>
-  </div>
-</section>
-
+  </section>
 
   <!-- Experience Section -->
   <section id="experience" class="section">
@@ -476,7 +502,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- Contact Section -->
   <section id="contact" class="section" style="background-color: var(--secondary);">
@@ -541,25 +566,25 @@
             <form class="contact-form">
               <div class="mb-4">
                 <label for="name" class="block mb-2" data-key="contact.form.name">Adınız</label>
-                <input type="text" id="name" required>
+                <input type="text" id="name" required class="w-full px-4 py-2 rounded border border-secondary bg-bg text-text focus:outline-none focus:ring-2 focus:ring-primary">
               </div>
               
               <div class="mb-4">
                 <label for="email" class="block mb-2" data-key="contact.form.email">E-posta Adresiniz</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email" required class="w-full px-4 py-2 rounded border border-secondary bg-bg text-text focus:outline-none focus:ring-2 focus:ring-primary">
               </div>
               
               <div class="mb-4">
                 <label for="subject" class="block mb-2" data-key="contact.form.subject">Konu</label>
-                <input type="text" id="subject" required>
+                <input type="text" id="subject" required class="w-full px-4 py-2 rounded border border-secondary bg-bg text-text focus:outline-none focus:ring-2 focus:ring-primary">
               </div>
               
               <div class="mb-4">
                 <label for="message" class="block mb-2" data-key="contact.form.message">Mesajınız</label>
-                <textarea id="message" rows="5" required></textarea>
+                <textarea id="message" rows="5" required class="w-full px-4 py-2 rounded border border-secondary bg-bg text-text focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
               </div>
               
-              <button type="submit" class="btn btn-primary w-full" data-key="contact.form.send">Gönder</button>
+              <button type="submit" class="btn btn-primary w-full py-3 rounded-lg text-lg font-semibold transition-all hover:scale-[1.02]" data-key="contact.form.send">Gönder</button>
             </form>
           </div>
         </div>
@@ -591,6 +616,5 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.0.0/dist/lenis.min.js"></script>
   <script src="script.js"></script>
- 
 </body>
 </html>
